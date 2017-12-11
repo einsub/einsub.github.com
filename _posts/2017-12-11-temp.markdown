@@ -1,10 +1,16 @@
 ---
 layout: post
-title:  "Temp post"
+title:  "포스팅 테스트"
 date:   2017-12-10 11:11:11
 author: Reid
 categories: Suga
 ---
 
-Hello
-Im
+## 포스트 테스팅입니다.
+* 가나
+* 다라
+```
+function a() {
+  go();
+}
+```
