@@ -1,9 +1,13 @@
 ---
 layout: post
-title:  "[번역] VS Code - Tips and Tricks"
-date:   2018-11-19 19:15:11
+title: "[번역] VS Code - Tips and Tricks"
+date: 2018-11-19 19:15:11
 author: Reid
-categories: programming
+categories:
+  - programming
+tags:
+  - programming
+  - vs code
 ---
 코딩하면서 마우스 안쓰기 운동을 위해 요약 번역해보았습니다. 잘못된 번역은 바로 잡아주시면 고맙겠습니다.
 
@@ -68,6 +72,7 @@ VS Code로 커스터마이즈 할 수 있는 것들:
 - JSON validation 추가
 - snippet 만들기
 - extension 설치
+
 ### Change your theme
 단축키: `⌘K ⌘T`
 
