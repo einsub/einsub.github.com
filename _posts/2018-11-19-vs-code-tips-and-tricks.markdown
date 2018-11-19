@@ -9,7 +9,7 @@ tags:
   - programming
   - vs code
 ---
-코딩하면서 마우스 안쓰기 운동을 위해 요약 번역해보았습니다. 잘못된 번역은 바로 잡아주시면 고맙겠습니다.
+마우스 안쓰고 코딩하기를 실천하기 위해 학습하기 위해 요약 번역해보았습니다. 잘못된 번역은 바로 잡아주시면 고맙겠습니다.
 
 원문: [https://code.visualstudio.com/docs/getstarted/tips-and-tricks](https://code.visualstudio.com/docs/getstarted/tips-and-tricks)
 # Tips and Tricks
@@ -211,6 +211,7 @@ extension 찾기
 2. Extensions 화면에서 검색
 3. 추천 extension 확인
 4. [awesome-vscode](https://github.com/viatsko/awesome-vscode) 같은 커뮤니티 extension 목록 참고
+
 ### Install extensions
 Extension 사이드 바의 More Actions (...) 버튼을 눌러 여러가지 방식으로 필터링 시켜 찾는다.
 
