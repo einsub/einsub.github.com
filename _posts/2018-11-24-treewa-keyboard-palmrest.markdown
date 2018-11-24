@@ -17,21 +17,23 @@ tags:
 # 손목 받침대를 찾다
 오래전부터 손목 받침대를 써오던 지인분께 문의하여 판매처와 연락을 해보았습니다. 공방에서 수작업으로 만드는 장인분 같았는데 가슴 아픈 답변을 받았습니다.
 
-![heartbreaking-answer](/assets/treewa-palm-rest-00.jpg | width=200)
+![heartbreaking-answer](/assets/treewa-palm-rest-00.jpg)
 
 어쩔 수 없이 검색 작업으로 알맞은 제품을 찾던 중 가장 눈길을 끌었던 업체는 [treewa](http://treewa.co.kr/)라는 회사로 큐레이션 되어 있는 제품들의 모양새와 완성도가 매우 좋아 보였습니다. 가격도 2민원대 초반으로 다른 업체들에 비해 저렴한 편이었습니다. 제가 사용하는 키보드가 `해피해킹 Pro II`이다보니 다른 키보드들에 비해 길이가 작은 받침대가 필요했는데 이 업체는 원목 종류, 길이, 폭, 디자인 등을 직접 고를 수 있어서 편리했습니다.
 
 ![shape](/assets/treewa-palm-rest-shape.png)
-모양 선택. 저는 A를 선택했습니다.
+<p style="text-align: center;">모양 선택</p>
 
 ![type](/assets/treewa-palm-rest-type.png)
-원목 종류. 저는 Walnut을 선택했습니다.
+<p style="text-align: center;">원목 종류</p>
 
 주문한 것이 11월 20일 오후, 제작을 마치고 발송 된 것이 11월 22일 오후, 머나먼 제주도에서 제품을 수령 받은 것이 11월 24일 오전이니 4일도 안되어 멋진 제품을 사용해볼 수 있게 되었습니다. 정갈하게 포장된 제품 이외에도 수평 교정을 대비한 받침 스티커와 귀염 넘치는 연필 한자루까지, 마음을 흐뭇하게 만드는 패키징이 마음에 들었습니다. 제품 역시 고급스러운 월넛 색상, 깍인 모서리의 부드러움 등 전체적인 완성도가 훌륭합니다.
 
 ![overview](/assets/treewa-palm-rest-03.jpg)
+<p style="text-align: center;">위에서 내려다 본 모습</p>
 
 ![side](/assets/treewa-palm-rest-01.jpg)
+<p style="text-align: center;">측면 모습</p>
 
 # 해피해킹 키보드 유저를 위한 정보
 해피해킹 키보드 사용자 분이라면 도움이 될 만한, 제가 주문한 규격을 적어봅니다.
@@ -47,10 +49,10 @@ tags:
 **확실히 편합니다**
 
 ![before](/assets/treewa-palm-rest-before.jpg)
-Before
+<p style="text-align: center;">Before</p>
 
 ![after](/assets/treewa-palm-rest-after.jpg)
-After
+<p style="text-align: center;">After</p>
 
 위 사진에서 볼 수 있듯, 받침대를 사용하면 손과 팔이 수평으로 놓여지는데, 이 덕분에 코딩을 할 때 손목이 꺾여서 무리가 가는 느낌을 받지 않습니다. 또 한가지 장점이라면 해피해킹 키보드의 키압이 살짝 높은 편이라서 힘이 약한 왼쪽 새끼 손가락을 사용할 때 불편한 감이 있었는데, 손목이 위로 올라간 상태에서는 손가락들에 힘을 주기가 더 수월합니다.
 
