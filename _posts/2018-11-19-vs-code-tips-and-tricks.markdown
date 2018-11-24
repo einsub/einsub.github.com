@@ -6,7 +6,9 @@ author: Reid
 categories:
   - programming
 tags:
-  - programming
+  - 프로그래밍
+  - 비주얼스튜디오
+  - IDE
   - vs code
 ---
 마우스 안쓰고 코딩하기를 실천하기 위해 학습하기 위해 요약 번역해보았습니다. 잘못된 번역은 바로 잡아주시면 고맙겠습니다.
