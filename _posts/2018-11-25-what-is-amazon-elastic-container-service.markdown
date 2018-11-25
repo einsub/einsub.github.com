@@ -11,7 +11,7 @@ tags:
   - ecs
   - docker
   - amazon cli
-published: false
+published: true
 ---
 # Elastic Container Service
 > 참고: 이 서비스를 이용하기 위해서는 Docker에 대한 기본적인 지식이 있어야 합니다. 아마존의 ['Docker란 무엇입니까?'](https://aws.amazon.com/ko/docker/)를 참고하세요.
