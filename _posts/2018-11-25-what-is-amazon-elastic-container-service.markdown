@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Amazon CLI로 서버를 ECS에서 구동하기 1 - 시작"
-date: 2018-12-25 17:04
+date: 2018-11-25 17:04
 author: Reid
 categories:
   - platform
@@ -20,7 +20,7 @@ Docker의 출현은 소프트웨어 산업에 큰 영향을 미치고 있습니�
 
 Amazon은 Elastic Container Service(ECS)로 Docker 컨테이너 서비스를 운용하고 있습니다. 얼마전까지 EC2 Container Service 였던걸로 기억하는데, Fargate를 런칭하면서 좀 더 큰 범위를 포괄하는 이름으로 변경한 것 같습니다. Fargate가 출시되기 전에는 컨테이너가 구동될 머신의 EC2 사양도 직접 설정하는 등 말처럼 간단하지만은 않은 서비스였습니다. 하지만 Fargate는 이 하위 레벨의 복잡한 설정들을 추상화시켜 감추었습니다. 그리고 ECS를 serverless한 서비스로 홍보하고 있습니다.
 
-이 글은 간단한 서버 애플리케이션을 작성해서 ECS를 통해 배포하고 동작시키는 과정을 Amazon CLI로 진행합니다. 특히 작년에 미국 region을 시작으로 지금은 서울 region까지 서비스가 확대된 Fargate를 활용합니다. 직전 프로젝트에서 Fargate 없는 ECS를 사용하여 백엔드를 구축했었는데 지금은 얼마나 편리해졌을지 기대됩니다. 
+이 시리즈는 간단한 서버 애플리케이션을 작성해서 ECS를 통해 배포하고 동작시키는 과정을 Amazon CLI로 진행합니다. 특히 작년에 미국 region을 시작으로 지금은 서울 region까지 서비스가 확대된 Fargate를 활용합니다. 직전 프로젝트에서 Fargate 없는 ECS를 사용하여 백엔드를 구축했었는데 지금은 얼마나 편리해졌을지 기대됩니다. 
 
 # ECS 구성
 - 한 region 내의 새 VPC 혹은 기존의 VPC에서 서비스를 시작 할 수 있습니다.
