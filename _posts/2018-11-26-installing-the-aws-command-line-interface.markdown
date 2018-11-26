@@ -59,8 +59,8 @@ aws-cli/1.16.60 Python/2.7.10 Darwin/18.2.0 botocore/1.12.50
 AWS CLI를 설정하기 위해 `aws configure` 명령을 입력합니다.
 ```bash
 $ aws configure
-AWS Access Key ID [None]: AKIAIKKYMYCPPTY3QDRQ
-AWS Secret Access Key [None]: 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
+AWS Access Key ID [None]: 본인의 Access Key ID
+AWS Secret Access Key [None]: 본인의 Secret Access Key
 Default region name [None]: ap-northeast-2
 Default output format [None]: json
 ```
