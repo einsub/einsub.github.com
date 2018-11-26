@@ -32,4 +32,3 @@ Amazon은 Elastic Container Service(ECS)로 Docker 컨테이너 서비스를 운
 - ECS는 새로 업데이트 된 docker 이미지로 자동 갱신하고 서비스를 제공합니다.
 
 ![](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/images/overview-fargate.png)
-
