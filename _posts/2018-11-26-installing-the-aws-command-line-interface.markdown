@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Amazon CLI로 서버를 ECS에서 구동하기 1 - AWS CLI 설치"
+title: "Amazon CLI로 ECS에 서버 띄우기 2 - AWS CLI 설치"
 date: 2018-12-26 21:50:15
 author: Reid
 categories:
