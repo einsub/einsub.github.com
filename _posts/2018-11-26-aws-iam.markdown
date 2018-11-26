@@ -29,17 +29,14 @@ AWS의 Security Credentials 페이지에 처음 진입하면 다음과 같은 �
 
 이 유저는 AWS CLI를 통해 서비스를 이용할 것이기 `Programmatic access`를 선택해야 합니다. 하지만, 이 유저에게 패스워드를 부여하여 콘솔 페이지에 접근은 하지 않을 것입니다. 그러므로 `AWS Management Console access`는 선택하지 않습니다.
 
-`Next:Permissions`를 누르면 이 사용자에게 권한을 부여할 수 있는 페이지가 나타납니다. 우리는 AWS CLI를 이용해 서비스에 접근하면서 필요한 권한을 하나씩 부여 할 것이기 때문에 지금은 일단 아무런 권한도 주지 않을 것입니다.
+`Next:Permissions`를 누르면 이 사용자에게 권한을 부여할 수 있는 페이지가 나타납니다. `Attach existing policies directly` 탭을 누르고 policy중 `AmazonECS_FullAccess`를 선택합니다. 이는 ECS를 다루기 위한 모든 권한을 하나의 정책으로 묶어둔 것입니다.
 
 `Next:Tags`를 누르면 사용자를 관리하기 위해 key:value 쌍의 태그를 붙이는 페이지가 나타납니다. 달랑 한명의 유저를 두고 굳이 태깅을 해둘 것은 없으므로 그냥 지나갑니다.
 
 `Next:Review`를 누르면 지금까지 설정한 것들을 마지막으로 보여주며 설정이 의도대로 되었는지를 묻는 페이지가 나타납니다.
 
-```
-This user has no permissions
-```
+`Create user`를 누릅니다.
 
-아직 이 유저는 아무것도 할 수 있는게 없습니다. `Create user`를 누릅니다.
 ## 성공
 
 ![](/assets/iam-success.png)

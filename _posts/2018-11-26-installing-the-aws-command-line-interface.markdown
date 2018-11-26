@@ -64,4 +64,4 @@ AWS Secret Access Key [None]: 본인의 Secret Access Key
 Default region name [None]: ap-northeast-2
 Default output format [None]: json
 ```
-IAM 사용자를 만들면 부여되는 액세스 키와 보안 키를 입력합니다. 기본 리전은 ap-northeast-2를 입력하는데 서울을 나타냅니다.
+IAM 사용자를 만들면 부여되는 액세스 키와 보안 키를 입력합니다. 기본 리전 이름으로는 서울인 ap-northeast-2를 입력합니다.
