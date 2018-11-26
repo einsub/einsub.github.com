@@ -1,7 +1,7 @@
 ---
 layout: post
-title: "Amazon CLI로 ECS에 서버 띄우기 2 - AWS CLI 설치"
-date: 2018-12-26 21:50:15
+title: "Amazon CLI로 ECS에 서버 띄우기 3 - AWS CLI 설치"
+date: 2018-12-26 21:50:16
 author: Reid
 categories:
   - platform
@@ -55,3 +55,13 @@ $ pip install awscli --upgrade --user
 $ aws --version
 aws-cli/1.16.60 Python/2.7.10 Darwin/18.2.0 botocore/1.12.50
 ```
+## 설정
+AWS CLI를 설정하기 위해 `aws configure` 명령을 입력합니다.
+```bash
+$ aws configure
+AWS Access Key ID [None]: AKIAIKKYMYCPPTY3QDRQ
+AWS Secret Access Key [None]: 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
+Default region name [None]: ap-northeast-2
+Default output format [None]: json
+```
+IAM 사용자를 만들면 부여되는 액세스 키와 보안 키를 입력합니다. 기본 리전은 ap-northeast-2를 입력하는데 서울을 나타냅니다.

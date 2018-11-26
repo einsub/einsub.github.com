@@ -1,0 +1,43 @@
+---
+layout: post
+title: "Amazon CLI로 ECS에 서버 띄우기 2 - AWS IAM 설정"
+date: 2018-12-26 21:50:15
+author: Reid
+categories:
+  - platform
+tags:
+  - amazon
+  - aws
+  - ecs
+  - docker
+  - amazon cli
+  - iam
+published: false
+---
+# IAM
+AWS의 기능들을 사용하기 위해서는 보안 절차를 거쳐야 합니다. 초기에는 보안키 하나만 발급받으면 무제한적으로 모든 서비스에 접근이 가능 했지만, AWS Identity and Access Management (IAM) 서비스가 제공되면서 한 계정 내에서도 여러 사용자를 만들고 각각 적절한 권한을 부여하는 등의 세밀한 설정이 가능해졌습니다.
+## IAM 사용자 만들기
+AWS의 Security Credentials 페이지에 처음 진입하면 다음과 같은 팝업창이 뜹니다.
+![](/assets/iam-popup.png)
+기존의 보안 방식을 그대로 이용할 것인지 IAM 사용자를 만들어서 사용 할 것인지를 묻는 것이죠. `Get Started with IAM Users`를 선택해서 강화된 보안 서비스를 이용합니다.
+
+`Add User` 버튼을 눌러서 사용자를 추가합니다.
+![](/assets/iam-add-user.png)
+이 유저는 AWS CLI를 통해 서비스를 이용할 것이기 `Programmatic access`를 선택해야 합니다. 하지만, 이 유저에게 패스워드를 부여하여 콘솔 페이지에 접근은 하지 않을 것입니다. 그러므로 `AWS Management Console access`는 선택하지 않습니다.
+
+`Next:Permissions`를 누르면 이 사용자에게 권한을 부여할 수 있는 페이지가 나타납니다. 우리는 AWS CLI를 이용해 서비스에 접근하면서 필요한 권한을 하나씩 부여 할 것이기 때문에 지금은 일단 아무런 권한도 주지 않을 것입니다.
+
+`Next:Tags`를 누르면 사용자를 관리하기 위해 key:value 쌍의 태그를 붙이는 페이지가 나타납니다. 달랑 한명의 유저를 두고 굳이 태깅을 해둘 것은 없으므로 그냥 지나갑니다.
+
+`Next:Review`를 누르면 지금까지 설정한 것들을 마지막으로 보여주며 설정이 의도대로 되었는지를 묻는 페이지가 나타납니다.
+
+```
+This user has no permissions
+```
+
+아직 이 유저는 아무것도 할 수 있는게 없습니다. `Create user`를 누릅니다.
+## 성공
+![](/assets/iam-success.png)
+성공했다는 메시지와 함께 이 유저의 `Access key ID`와 `Secret access key`가 부여됩니다.
+
+우리에게 필요한 것은 바로 이것들입니다. 이후 AWS CLI를 설치하고 설정을 할 때 이 키들이 필요합니다.
