@@ -2,8 +2,12 @@
 layout: default
 ---
 <div class="home">
-
-<div class="site-header-container {% if site.cover %}has-cover{% endif %}" {% if site.cover %}style="background-image: url({{ site.cover | prepend: site.baseurl }});"{% endif %}>
+{% assign min = 1 %}
+{% assign max = 71 %}
+{% assign diff = max | minus: min %}
+{% assign randomNumber = "now" | date: "%N" | modulo: diff | plus: min %}
+<blockquote>&ldquo;{{ site.data.inspirational-quotes[random].quote }}&rdquo; <cite>{{ site.data.inspirational-quotes[random].person }}</cite></blockquote>
+<div class="site-header-container {% if site.cover %}has-cover{% endif %}" {% if site.cover %}style="background-image: url({{ site.cover | prepend: site.baseurl }}_{{ randomNumber }}.jpg);"{% endif %}>
   <div class="scrim {% if site.cover %}has-cover{% endif %}">
     <header class="site-header">
       <h1 class="title">{{ site.title }}</h1>
