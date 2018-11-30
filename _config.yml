@@ -10,7 +10,7 @@ exclude:
 
 # Site settings
 title: ull.im
-subtitle: "울려 퍼지다, 반향하다; 공명하다; 목소리를 울리다."
+#subtitle: "울려 퍼지다, 반향하다; 공명하다; 목소리를 울리다."
 email: einsub@gmail.com
 name: Reid
 description: >
@@ -21,7 +21,7 @@ description: >
 # and never end with a slash. Set it to a blank value if hosting at the
 # root of your server.
 baseurl: "" # the subpath of your site, e.g. /blog/
-url: "http://blog.ull.im" # the base hostname & protocol for your site
+url: "https://blog.ull.im" # the base hostname & protocol for your site
 cover: "/assets/header_image.jpg"
 logo: "/assets/logo.jpeg"
 
