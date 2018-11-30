@@ -4,7 +4,7 @@ title: "[번역] VS Code - Tips and Tricks"
 date: 2018-11-19 19:15:11
 author: Reid
 categories:
-  - programming
+  - engineering
 tags:
   - 프로그래밍
   - 비주얼스튜디오

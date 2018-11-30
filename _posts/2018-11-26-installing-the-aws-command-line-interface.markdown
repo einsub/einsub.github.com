@@ -4,7 +4,7 @@ title: "Amazon CLI로 ECS에 서버 띄우기 3 - AWS CLI 설치"
 date: 2018-11-26 21:50:16
 author: Reid
 categories:
-  - platform
+  - engineering
 tags:
   - amazon
   - aws

@@ -4,7 +4,7 @@ title: "Amazon CLI로 ECS에 서버 띄우기 2 - AWS IAM 설정"
 date: 2018-11-26 21:50:15
 author: Reid
 categories:
-  - platform
+  - engineering
 tags:
   - amazon
   - aws
@@ -14,7 +14,7 @@ tags:
   - iam
 published: true
 ---
-# IAM
+# AWS IAM
 AWS의 기능들을 사용하기 위해서는 보안 절차를 거쳐야 합니다. 초기에는 보안키 하나만 발급받으면 무제한적으로 모든 서비스에 접근이 가능 했지만, AWS Identity and Access Management (IAM) 서비스가 제공되면서 한 계정 내에서도 여러 사용자를 만들고 각각 적절한 권한을 부여하는 등의 세밀한 설정이 가능해졌습니다.
 ## IAM 사용자 만들기
 AWS의 Security Credentials 페이지에 처음 진입하면 다음과 같은 팝업창이 뜹니다.
