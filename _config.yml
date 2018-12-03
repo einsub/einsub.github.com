@@ -48,16 +48,14 @@ disqus_shortname: ullim
 # Google analytics
 ga_tracking_id: "UA-111019603-1"
 
-collections:
-  - react
+# collections_dir: collections
+# collections:
+#   - react
 
 # Category descriptions (for archive pages)
-descriptions:
-  - cat: engineering
-    desc: "기술"
-
-  - cat: review
-    desc: "리뷰"
+# descriptions:
+#   - cat: engineering
+#   - cat: review
 
 # Social icons and sharing options
 #
