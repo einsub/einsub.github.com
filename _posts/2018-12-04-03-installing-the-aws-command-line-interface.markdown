@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Amazon CLI로 ECS에 서버 띄우기 3 - AWS CLI 설치"
-date: 2018-11-26 21:50:16
+date: 2018-12-04 08:02:00
 author: Reid
 categories:
   - engineering
@@ -11,7 +11,7 @@ tags:
   - ecs
   - docker
   - amazon cli
-published: true
+published: false
 ---
 # AWS CLI
 AWS CLI는 AWS의 각종 기능을 terminal에서 명령어만으로 실행 할 수 있게 해줍니다. 직접 AWS 콘솔 페이지에서 버튼을 눌러 실행하는 것 보다 간편화며, 이후 스크립트로 만들어 구동하는 것도 쉬워집니다.
@@ -59,8 +59,8 @@ aws-cli/1.16.60 Python/2.7.10 Darwin/18.2.0 botocore/1.12.50
 AWS CLI를 설정하기 위해 `aws configure` 명령을 입력합니다.
 ```bash
 $ aws configure
-AWS Access Key ID [None]: 본인의 Access Key ID
-AWS Secret Access Key [None]: 본인의 Secret Access Key
+AWS Access Key ID [None]: 본인의_액세스_키_아이디
+AWS Secret Access Key [None]: 본인의_비밀_액세스_키
 Default region name [None]: ap-northeast-2
 Default output format [None]: json
 ```

@@ -1,0 +1,350 @@
+---
+layout: post
+title: "Amazon CLI로 ECS에 서버 띄우기 6 - ECS에 서비스 올리기"
+date: 2018-12-04 08:05:00
+author: Reid
+categories:
+  - engineering
+tags:
+  - amazon
+  - aws
+  - ecs
+  - docker
+  - amazon cli
+  - cluster
+published: false
+---
+# ECS에 서비스 올리기
+
+## ECR에 Docker 이미지 등록
+
+
+## ECS 구동 방식들
+
+> 참고<br/>
+Amazon 문서에는 **시작 유형**이라고 번역했는데 아무래도 이상한 것 같아 이 문서에서는 **구동 방식**이라고 표기합니다. 원문에서는 **Launch type**을 사용하고 있습니다.
+
+### EC2 구동 방식
+
+ECS Fargate 구동 방식이 나오기 전에는 이것이 유일한 구동 방식이었습니다. 사실, 별다른 옵션이 없었기 때문에 당연하게 사용해왔던 것입니다. ECS의 계층 구조는 클러스터안에 컨테이너들이 존재하고 컨테이너안에 서비스나 태스크들이 존재합니다. 
+
+*클러스터 > 컨테이너 > 태스크, 서비스*
+
+컨테이너 인스턴스는 내부적으로 EC2 인스턴스로 구성되어 물리적인 하드웨어 공간에 대한 유추가 가능했습니다. 그 EC2 인스턴스에 ECS agent를 설치해서 Docker 이미지를 컨테이너에 탑재하는 작업을 수행하게 했습니다.
+
+![](https://docs.aws.amazon.com/ko_kr/AmazonECS/latest/developerguide/images/overview-standard.png)
+
+위 그림에서 볼 수 있듯이 ECS를 다루기 위해서는 꽤 복잡한 구조를 이해하고 있어야 했습니다.
+
+### Fargate 구동 방식
+
+Fargate 구동 방식은 반면, 그런 복잡한 구조를 숨기고 간결한 인터페이스를 제공하는 것이 목적입니다. 내부에서는 기존의 컨테이너 인스턴스들과 agent들이 실행되고 있겠지만 사용자가 그런 것들을 알고 있을 필요는 없습니다. 오류 없이 잘 동작하기만 하면 개발자는 인프라에 대한 걱정 없이 개발에만 집중 할 수 있으니까요.
+
+![](https://docs.aws.amazon.com/ko_kr/AmazonECS/latest/developerguide/images/overview-fargate.png)
+
+클러스터 안의 컨테이너에 대한 개념이 사라졌습니다. 단지 태스크만 존재 할 뿐이죠. 이런 개념의 변화 때문에 아마존에서는 Fargate가 serverless를 구현했다고 이야기할 수 있게 된 것입니다.
+
+## Cluster 생성
+
+클러스터는 작업들을 묶는 논리적 단위입니다. 클러스터안에 태스크나 서비스를 만들어 구동 할 수 있습니다. 이전에 설치한 AWS CLI로 클러스터를 만들어 봅시다.
+
+```bash
+$ aws ecs create-cluster --cluster-name test-cluster
+{
+    "cluster": {
+        "status": "ACTIVE",
+        "statistics": [],
+        "tags": [],
+        "clusterName": "test-cluster",
+        "registeredContainerInstancesCount": 0,
+        "pendingTasksCount": 0,
+        "runningTasksCount": 0,
+        "activeServicesCount": 0,
+        "clusterArn": "arn:aws:ecs:ap-northeast-2:본인의_AWS_아이디:cluster/test-cluster"
+    }
+}
+```
+
+잘 만들어졌는지 확인해볼까요?
+
+```bash
+$ aws ecs list-clusters
+{
+    "clusterArns": [
+        "arn:aws:ecs:ap-northeast-2:본인의_AWS_아이디:cluster/test-cluster"
+    ]
+}
+```
+
+## 태스크 정의(Task definition) 등록
+
+클러스터에 태스크를 만들기 위해 태스크 정의를 작성하여 등록해야 합니다. 태스크 정의는 간단히 이야기하면 우리가 로컬 환경에서 Docker 컨테이너를 돌릴 때 작성했던 Dockerfile의 AWS 버전이라고 생각하면 됩니다.
+
+아래는 ecs-test-server에 대한 태스크 정의 설정 JSON 입니다.
+
+```json
+{
+    "family": "ecs-test", 
+    "networkMode": "awsvpc", 
+    "executionRoleArn": "arn:aws:iam::본인의_AWS_아이디:role/ecsTaskExecutionRole",
+    "containerDefinitions": [
+        {
+            "name": "ecs-test-server", 
+            "image": "본인의_AWS_아이디.dkr.ecr.ap-northeast-2.amazonaws.com/ecs-test-server:latest", 
+            "portMappings": [
+                {
+                    "containerPort": 3000, 
+                    "hostPort": 3000, 
+                    "protocol": "tcp"
+                }
+            ], 
+            "essential": true, 
+            "entryPoint": [
+                "node",
+                "index.js"
+            ]
+        },
+        {
+            "name": "ecs-test-data-store", 
+            "image": "본인의_AWS_아이디.dkr.ecr.ap-northeast-2.amazonaws.com/ecs-test-data-store:latest", 
+            "portMappings": [
+                {
+                    "containerPort": 4000, 
+                    "hostPort": 4000, 
+                    "protocol": "tcp"
+                }
+            ], 
+            "essential": false, 
+            "entryPoint": [
+                "node",
+                "index.js"
+            ]
+        }
+    ], 
+    "requiresCompatibilities": [
+        "FARGATE"
+    ], 
+    "cpu": "256", 
+    "memory": "512"
+}
+```
+
+Docker의 bridge 모드를 사용 할 때는 호스트 포트와 컨테이너 포트를 서로 다르게 매핑 할 수 있었지만 여기서 사용하는 awsvpc 네트워크 모드에서는 불가능하기 때문에 동일하게 3000으로 부여했습니다.
+
+태스크 정의를 등록하는 방법은 두 가지가 있습니다.
+
+1. --cli-input-json 파라메터에 JSON 파일 경로를 입력
+2. 터미널에서 명령줄에 JSON을 파라메터로 전달
+
+여기서는 JSON 파일을 입력해서 태스크 정의를 만드는 방법을 사용해보겠습니다:
+
+ecs-test-server와 ecs-test-data-store를 함께 포함하는 태스크 정의를 만듭니다.
+```
+$ aws ecs register-task-definition --cli-input-json file://$HOME/Projects/ecs-test/fargate-task.json
+
+{
+    "taskDefinition": {
+        "status": "ACTIVE",
+        "networkMode": "awsvpc",
+        "family": "ecs-test",
+        "placementConstraints": [],
+        "requiresAttributes": [
+            {
+                "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+            },
+            {
+                "name": "ecs.capability.task-eni"
+            }
+        ],
+        "cpu": "256",
+        "compatibilities": [
+            "EC2",
+            "FARGATE"
+        ],
+        "volumes": [],
+        "memory": "512",
+        "requiresCompatibilities": [
+            "FARGATE"
+        ],
+        "taskDefinitionArn": "arn:aws:ecs:ap-northeast-2:본인의_AWS_아이디:task-definition/ecs-test:2",
+        "containerDefinitions": [
+            {
+                "environment": [],
+                "name": "ecs-test-server",
+                "mountPoints": [],
+                "image": "ecs-test-server:latest",
+                "cpu": 0,
+                "portMappings": [
+                    {
+                        "protocol": "tcp",
+                        "containerPort": 3000,
+                        "hostPort": 3000
+                    }
+                ],
+                "entryPoint": [
+                    "node",
+                    "index.js"
+                ],
+                "essential": true,
+                "volumesFrom": []
+            },
+            {
+                "environment": [],
+                "name": "ecs-test-data-store",
+                "mountPoints": [],
+                "image": "ecs-test-data-store:latest",
+                "cpu": 0,
+                "portMappings": [
+                    {
+                        "protocol": "tcp",
+                        "containerPort": 4000,
+                        "hostPort": 4000
+                    }
+                ],
+                "entryPoint": [
+                    "node",
+                    "index.js"
+                ],
+                "essential": false,
+                "volumesFrom": []
+            }
+        ],
+        "revision": 2
+    }
+}
+```
+
+태스크 정의가 정상적으로 만들어졌는지 확인합니다:
+
+```bash
+$ aws ecs list-task-definitions
+
+{
+    "taskDefinitionArns": [
+        "arn:aws:ecs:ap-northeast-2:본인의_AWS_아이디:task-definition/ecs-test:1"
+    ]
+}
+```
+
+## Security group 생성
+
+서비스를 만들 때에는 네트워크 보안을 위해 security group을 입력해야 합니다. 우리가 만드는 서비스는 3000번 포트로 외부와의 접속을 받기 때문에 이에 대해 정의를 내려줘야 합니다.
+
+security group을 만들 때에는 적용 할 vpc id를 전달해야 합니다. vpc를 조회하기 위해 다음 명령을 입력합니다:
+
+```bash
+$ aws ec2 describe-vpcs
+
+{
+    "Vpcs": [
+        {
+            "VpcId": "vpc-7479991d",
+            "InstanceTenancy": "default",
+            "CidrBlockAssociationSet": [
+                {
+                    "AssociationId": "vpc-cidr-assoc-5bc62532",
+                    "CidrBlock": "172.31.0.0/16",
+                    "CidrBlockState": {
+                        "State": "associated"
+                    }
+                }
+            ],
+            "State": "available",
+            "DhcpOptionsId": "dopt-4a5bbb23",
+            "CidrBlock": "172.31.0.0/16",
+            "IsDefault": true
+        }
+    ]
+}
+```
+
+여기서 얻은 vpc id를 입력하여 security group을 생성합니다:
+
+```bash
+$ aws ec2 create-security-group --group-name ecs-test-sg --description "ECS test security group" --vpc-id vpc-7479991d
+
+{
+    "GroupId": "sg-08aab61ed01e29221"
+}
+```
+
+security group에 3000번 포트를 오픈합니다:
+
+```bash
+$ aws ec2 authorize-security-group-ingress --group-id sg-08aab61ed01e29221 --protocol tcp --port 3000 --cidr 0.0.0.0/0
+```
+
+## 서비스 생성
+
+이제 마지막 작업으로 서비스를 생성해서 태스크를 구동합니다.
+
+```bash
+$ aws ecs create-service --cluster test-cluster --service-name ecs-test --task-definition ecs-test:2 --desired-count 2 --launch-type "FARGATE" --network-configuration "awsvpcConfiguration={subnets=[subnet-6598780c,subnet-68bf9d22],securityGroups=[sg-08aab61ed01e29221]}"
+
+{
+    "service": {
+        "networkConfiguration": {
+            "awsvpcConfiguration": {
+                "subnets": [
+                    "subnet-6598780c",
+                    "subnet-68bf9d22"
+                ],
+                "securityGroups": [
+                    "sg-08aab61ed01e29221"
+                ],
+                "assignPublicIp": "DISABLED"
+            }
+        },
+        "launchType": "FARGATE",
+        "enableECSManagedTags": false,
+        "loadBalancers": [],
+        "desiredCount": 2,
+        "clusterArn": "arn:aws:ecs:ap-northeast-2:본인의_AWS_아이디:cluster/test-cluster",
+        "serviceArn": "arn:aws:ecs:ap-northeast-2:본인의_AWS_아이디:service/ecs-test",
+        "deploymentConfiguration": {
+            "maximumPercent": 200,
+            "minimumHealthyPercent": 100
+        },
+        "createdAt": 1543848566.053,
+        "schedulingStrategy": "REPLICA",
+        "placementConstraints": [],
+        "deployments": [
+            {
+                "status": "PRIMARY",
+                "networkConfiguration": {
+                    "awsvpcConfiguration": {
+                        "subnets": [
+                            "subnet-6598780c",
+                            "subnet-68bf9d22"
+                        ],
+                        "securityGroups": [
+                            "sg-08aab61ed01e29221"
+                        ],
+                        "assignPublicIp": "DISABLED"
+                    }
+                },
+                "pendingCount": 0,
+                "launchType": "FARGATE",
+                "createdAt": 1543848566.053,
+                "desiredCount": 2,
+                "taskDefinition": "arn:aws:ecs:ap-northeast-2:본인의_AWS_아이디:task-definition/ecs-test:2",
+                "updatedAt": 1543848566.053,
+                "platformVersion": "1.2.0",
+                "id": "ecs-svc/9223370493006209754",
+                "runningCount": 0
+            }
+        ],
+        "serviceName": "ecs-test",
+        "events": [],
+        "runningCount": 0,
+        "status": "ACTIVE",
+        "serviceRegistries": [],
+        "pendingCount": 0,
+        "platformVersion": "LATEST",
+        "placementStrategy": [],
+        "propagateTags": "NONE",
+        "roleArn": "arn:aws:iam::본인의_AWS_아이디:role/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS",
+        "taskDefinition": "arn:aws:ecs:ap-northeast-2:본인의_AWS_아이디:task-definition/ecs-test:2"
+    }
+}
+```
