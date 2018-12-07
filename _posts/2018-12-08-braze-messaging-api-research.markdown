@@ -28,6 +28,7 @@ published: true
     - opted_in: 옵트 인 된 유저에게만 발송
     - subscribed: 옵트 인 되었거나 구독 중인 사용자에게만 발송
     - all: 구독하지 않은 유저에게까지 모두에게 발송, transactional 이메일 보내기에 유용
+
 ## Send Endpoints
 ### POST messages/send
 - 설계된 사용자군에게 임시 메시지를 즉시 발송 가능
@@ -84,6 +85,7 @@ Content-Type: application/json
   ]
 }
 ```
+
 ## Schedule Endpoints
 ### POST messages/schedule/create
 - 특정 타임존 시각, 각 유저별 타임존 시각, 최적 시각 등으로 보내는 시각 설정 가능
@@ -194,6 +196,7 @@ Content-Type: application/json
   "schedule_id": 삭제 할 schedule ID
 }
 ```
+
 ## 메시지 전송 트래킹을 위한 Send IDs 생성
 ### POST /sends/id/create
 - 메시지를 보낼 때 마다 따로 캠페인을 생성하지 않고도, 메시지를 전송하고 메시지 퍼포먼스를 트랙킹 할 수 있음
