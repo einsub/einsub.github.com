@@ -11,8 +11,7 @@ tags:
   - push
 published: true
 ---
-# Braze의 messaging API
-## 용어 설명
+# 용어 설명
   - external_user_ids
     - Braze SDK에 설정한 애플리케이션의 ID
     - 캠페인의 경우 segment와 동시에 설정되어 있으면 둘 모두를 포함하는 사용자들이 대상이 됨
@@ -29,16 +28,21 @@ published: true
     - subscribed: 옵트 인 되었거나 구독 중인 사용자에게만 발송
     - all: 구독하지 않은 유저에게까지 모두에게 발송, transactional 이메일 보내기에 유용
 
-## Send Endpoints
-### POST messages/send
+---
+
+# Send Endpoints
+
+## POST messages/send
+
 - 설계된 사용자군에게 임시 메시지를 즉시 발송 가능
 - `segment_id`, `external_user_ids`, `audience` 중 하나는 입력해야 함
 - `segment_id`는 segment에 등록된 사용자에게 발송
 - `external_user_ids`, `user_aliases`는 해당 사용자들에게 직접 발송
 - 함께 입력되면 해당 사용자들 중 segment에 등록된 사용자에게 발송
-```json
-POST https://YOUR_REST_API_URL/messages/send
+
+**POST** https://YOUR_REST_API_URL/messages/send
 Content-Type: application/json
+```json
 {
   "api_key": API Key,
   "broadcast": external_user_ids나 aliases가 없으면 true로 설정,
@@ -61,11 +65,14 @@ Content-Type: application/json
   }
 }
 ```
-### POST campaigns/trigger/send
+
+## POST campaigns/trigger/send
+
 - API Triggered Delivery를 이용하여 발송, 대시보드에 메시지 내용을 저장해놓고, 메세지를 보낼 시점과 누구에게 보낼지를 지정
-```json
-POST https://YOUR_REST_API_URL/campaigns/trigger/send
+
+**POST** https://YOUR_REST_API_URL/campaigns/trigger/send
 Content-Type: application/json
+```json
 {
   "api_key": API Key,
   "campaign_id": Campaign ID,
@@ -86,14 +93,19 @@ Content-Type: application/json
 }
 ```
 
-## Schedule Endpoints
-### POST messages/schedule/create
+---
+
+# Schedule Endpoints
+
+## POST messages/schedule/create
+
 - 특정 타임존 시각, 각 유저별 타임존 시각, 최적 시각 등으로 보내는 시각 설정 가능
 - 캠페인, 캔버스, 정해진 시각에 보내야 하는 메시지등의 스케줄을 생성
 - segment가 타겟인 경우, 요청 기록은 Developer Console에 저장됨
-```json
-POST https://YOUR_REST_API_URL/messages/schedule/create
+
+**POST** https://YOUR_REST_API_URL/messages/schedule/create
 Content-Type: application/json
+```json
 {
   "api_key": API Key,
   // 'segment_id', 'external_user_ids', 'audience' 중 하나는 입력해야 함
@@ -126,10 +138,12 @@ Content-Type: application/json
   }
 }
 ```
-### campaigns/trigger/schedule/create
-```json
-POST https://YOUR_REST_API_URL/campaigns/trigger/schedule/create
+
+## campaigns/trigger/schedule/create
+
+**POST** https://YOUR_REST_API_URL/campaigns/trigger/schedule/create
 Content-Type: application/json
+```json
 {
   "api_key": API Key,
   "campaign_id": Campaign ID,
@@ -149,10 +163,12 @@ Content-Type: application/json
   }
 }
 ```
-### POST messages/schedule/update
-```json
-POST https://YOUR_REST_API_URL/messages/schedule/update
+
+## POST messages/schedule/update
+
+**POST** https://YOUR_REST_API_URL/messages/schedule/update
 Content-Type: application/json
+```json
 {
   "api_key": API Key,
   "schedule_id": 수정 할 스케줄 ID,
@@ -164,10 +180,12 @@ Content-Type: application/json
   }
 }
 ```
-### POST campaigns/trigger/schedule/update
-```json
-POST https://YOUR_REST_API_URL/campaigns/trigger/schedule/update
+
+## POST campaigns/trigger/schedule/update
+
+**POST** https://YOUR_REST_API_URL/campaigns/trigger/schedule/update
 Content-Type: application/json
+```json
 {
   "api_key": API Key,
   "campaign_id": Campaign ID,
@@ -177,19 +195,23 @@ Content-Type: application/json
   }
 }
 ```
-### POST messages/schedule/delete
-```json
-OST https://YOUR_REST_API_URL/messages/schedule/delete
+
+## POST messages/schedule/delete
+
+**POST** https://YOUR_REST_API_URL/messages/schedule/delete
 Content-Type: application/json
+```json
 {
   "api_key": API Key,
   "schedule_id": 삭제 할 schedule ID
 }
 ```
-### POST campaigns/trigger/schedule/delete
-```json
-POST https://YOUR_REST_API_URL/campaigns/trigger/schedule/delete
+
+## POST campaigns/trigger/schedule/delete
+
+**POST** https://YOUR_REST_API_URL/campaigns/trigger/schedule/delete
 Content-Type: application/json
+```json
 {
   "api_key": API Key,
   "campaign_id": Campaign ID,
@@ -197,21 +219,28 @@ Content-Type: application/json
 }
 ```
 
-## 메시지 전송 트래킹을 위한 Send IDs 생성
-### POST /sends/id/create
+---
+
+# 메시지 전송 트래킹을 위한 Send IDs 생성
+
+## POST /sends/id/create
+
 - 메시지를 보낼 때 마다 따로 캠페인을 생성하지 않고도, 메시지를 전송하고 메시지 퍼포먼스를 트랙킹 할 수 있음
 - 프로그램 적으로 메시지를 만들어서 전송 할 때 유용
 - 주어진 앱 그룹 당 일간 100개까지 제한
-```json
-POST https://YOUR_REST_API_URL/sends/id/create
+
+**POST** https://YOUR_REST_API_URL/sends/id/create
 Content-Type: application/json
+```json
 {
   "api_key": API Key,
   "campaign_id": Campaign ID,
   "send_id": Send DI
 }
 ```
+
 ## 근접한 스케줄의 캠페인과 캔버스 얻기
+
 ```bash
 $ curl https://rest.iad-01.braze.com/messages/scheduled_broadcasts?api_key=X&end_time=2017-09-01T00:00:00-04:00
 ```
