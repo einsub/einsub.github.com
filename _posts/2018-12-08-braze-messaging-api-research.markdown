@@ -239,7 +239,9 @@ Content-Type: application/json
 }
 ```
 
-## 근접한 스케줄의 캠페인과 캔버스 얻기
+---
+
+# 근접한 스케줄의 캠페인과 캔버스 얻기
 
 ```bash
 $ curl https://rest.iad-01.braze.com/messages/scheduled_broadcasts?api_key=X&end_time=2017-09-01T00:00:00-04:00
