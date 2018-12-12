@@ -41,8 +41,7 @@ published: true
 - 함께 입력되면 해당 사용자들 중 segment에 등록된 사용자에게 발송
 
 **POST** https://YOUR_REST_API_URL/messages/send
-Content-Type: application/json
-```json
+```text
 {
   "api_key": API Key,
   "broadcast": external_user_ids나 aliases가 없으면 true로 설정,
@@ -71,8 +70,7 @@ Content-Type: application/json
 - API Triggered Delivery를 이용하여 발송, 대시보드에 메시지 내용을 저장해놓고, 메세지를 보낼 시점과 누구에게 보낼지를 지정
 
 **POST** https://YOUR_REST_API_URL/campaigns/trigger/send
-Content-Type: application/json
-```json
+```text
 {
   "api_key": API Key,
   "campaign_id": Campaign ID,
@@ -104,8 +102,7 @@ Content-Type: application/json
 - segment가 타겟인 경우, 요청 기록은 Developer Console에 저장됨
 
 **POST** https://YOUR_REST_API_URL/messages/schedule/create
-Content-Type: application/json
-```json
+```text
 {
   "api_key": API Key,
   // 'segment_id', 'external_user_ids', 'audience' 중 하나는 입력해야 함
@@ -142,8 +139,7 @@ Content-Type: application/json
 ## campaigns/trigger/schedule/create
 
 **POST** https://YOUR_REST_API_URL/campaigns/trigger/schedule/create
-Content-Type: application/json
-```json
+```text
 {
   "api_key": API Key,
   "campaign_id": Campaign ID,
@@ -167,8 +163,7 @@ Content-Type: application/json
 ## POST messages/schedule/update
 
 **POST** https://YOUR_REST_API_URL/messages/schedule/update
-Content-Type: application/json
-```json
+```text
 {
   "api_key": API Key,
   "schedule_id": 수정 할 스케줄 ID,
@@ -184,8 +179,7 @@ Content-Type: application/json
 ## POST campaigns/trigger/schedule/update
 
 **POST** https://YOUR_REST_API_URL/campaigns/trigger/schedule/update
-Content-Type: application/json
-```json
+```text
 {
   "api_key": API Key,
   "campaign_id": Campaign ID,
@@ -199,8 +193,7 @@ Content-Type: application/json
 ## POST messages/schedule/delete
 
 **POST** https://YOUR_REST_API_URL/messages/schedule/delete
-Content-Type: application/json
-```json
+```text
 {
   "api_key": API Key,
   "schedule_id": 삭제 할 schedule ID
@@ -210,8 +203,7 @@ Content-Type: application/json
 ## POST campaigns/trigger/schedule/delete
 
 **POST** https://YOUR_REST_API_URL/campaigns/trigger/schedule/delete
-Content-Type: application/json
-```json
+```text
 {
   "api_key": API Key,
   "campaign_id": Campaign ID,
@@ -230,8 +222,7 @@ Content-Type: application/json
 - 주어진 앱 그룹 당 일간 100개까지 제한
 
 **POST** https://YOUR_REST_API_URL/sends/id/create
-Content-Type: application/json
-```json
+```text
 {
   "api_key": API Key,
   "campaign_id": Campaign ID,
