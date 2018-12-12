@@ -9,18 +9,18 @@ tags:
   - tookan
 published: true
 ---
-# Tookan API 톺아보기
-
 > 참조 사이트:<br />
 https://tookanapi.docs.apiary.io/#
 
-## Task
-### 종류
+# Task
+
+## 종류
 - 픽업 (Pickup Task)
 - 배달 (Delivery Task)
 - 픽업과 배달 (Pickup & Delivery Task)
 - 심부름? (Appointment Task)
-### 상태
+
+## 상태
 - **Assigned (0)**: 태스크가 에이전트에게 배정됨
 - **Started (1)**: 에이전트가 태스크를 시작함
 - **Successful (2)**: 태스크가 성공적으로 완료됨
@@ -31,7 +31,8 @@ https://tookanapi.docs.apiary.io/#
 - **Decline (8)**: 에이전트가 태스크를 거부함
 - **Cancel (9)**: 에이전트가 태스크를 취소함
 - **Deleted (10)**: 대시보드에서 태스크를 제거함
-### API
+
+## API
 - Task 생성
   - csv로부터 생성
   - Tookan의 주문 양식을 이용한 고객의 task 생성
@@ -45,9 +46,10 @@ https://tookanapi.docs.apiary.io/#
   - 상세 정보 가져오기
   - 주문 번호로부터 task 가져오기
 
-## Agent
+# Agent
 픽업과 배달을 담당
-### API
+
+## API
 - Agent 관리
   - 생성 / 수정 / 삭제
   - 차단: 배정을 금지 시키는 듯
@@ -60,26 +62,29 @@ https://tookanapi.docs.apiary.io/#
 - Task 배정
 - Notification 보내기
 
-## Team
+# Team
 에이전트들을 묶는 그룹 단위
-### API
+
+## API
 - Team 관리
   - 생성 / 수정 / 삭제
 - Team 가져오기
   - 상세 정보 가져오기
   - Job과 Agent 정보 가져오기
 
-## Manager
+# Manager
 Task와 Agent를 다루는 관리자. Team 단위로 권한을 제한 할 수도 있음.
-### API
+
+## API
 - Manager 관리
   - 생성 / 삭제
 - Manager 가져오기
   - 전체 manager 가져오기
 
-## Customers
+# Customers
 픽업 배달을 요청하는 고객
-### API
+
+## API
 - Customer 관리
   - 생성 / 수정 / 삭제
 - Customer 가져오기
@@ -88,18 +93,20 @@ Task와 Agent를 다루는 관리자. Team 단위로 권한을 제한 할 수도
   - 전화번호로 검색
   - 이름으로 검색
 
-## User
+# User
 API 사용자로 서비스 전반의 기능들을 관리. 
-### API
+
+## API
 - User 등록
 - User 관리
   - 전화번호 변경
   - 비밀번호 변경
   - 이메일 중복 확인
 
-## Merchant
+# Merchant
 사장님. 대시보드에 직접 로그인해서 agent나 task등을 관리 할 수 있음. Tookan 마켓플레이스에서 **Multi Merchant Marketplace**를 활성화해야 merchant를 생성 할 수 있음.
-### API
+
+## API
 - Merchant 관리
   - 생성 / 수정 / 삭제
   - 차단
@@ -114,9 +121,10 @@ API 사용자로 서비스 전반의 기능들을 관리.
   - 가용 Agent 검색
   - Task 할당
 
-## Geofence
+# Geofence
 fleet이 활동하는 구역(reigon)을 정의
-### API
+
+## API
 - Reigon 관리
   - 생성 / 수정 / 삭제
 - Reigon 가져오기
@@ -124,14 +132,15 @@ fleet이 활동하는 구역(reigon)을 정의
   - 상세 정보 가져오기
 - 특정 Agent로부터 region을 제거
 
-## Mission
+# Mission
 여러 workflow로부터 만들어진 task들을 합쳐서 mission을 생성하고 이를 여러 agent에게 할당 가능
-### API
+
+## API
 - Mission Task 만들기
 - Mission 목록 보기
 - Mission 삭제
 
-## Webhook
+# Webhook
 Tookan에서 우리 서비스로 정보를 전달. 넘어온 job_id와 job_status로 상태를 체크할 수 있음. 넘어온 요청이 tookan으로부터 넘어온 것인지 검증하기 위해 tookan_shared_secret 파라메터를 비교. task_history=1을 붙여서 요청하면 태스크 히스토리도 함께 보내줌.
 
 ## 샘플
