@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "[번역] TypeScript로 NPM module을 만들어 배포하기"
+title: "[번역] TypeScript로 NPM 모듈을 만들어 배포하기"
 date: 2018-12-23 12:53:40 
 author: Reid
 categories:
@@ -8,6 +8,7 @@ categories:
 tags:
   - typescript
   - npm
+  - module
 published: true
 ---
 > 원본 사이트:<br />
@@ -221,9 +222,9 @@ tsc는 `node_modules/.bin` 폴더에 cmd가 있으므로, 그냥 `tsc --init`을
 }
 ```
 
-> **"target": "es5"** => ECMAScript 타겟 버전을 설정합니다: 'ES3' (기본), 'ES5', 'ES2015', 'ES2016', 'ES2017', 'ESNEXT'<p/>
-**"module": "commonjs"** => 모듈 코드 생성 방식을 설정합니다: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', 'ESNext'<p/>
-**"declaration": "true"** => 상응하는 'd.ts' 파일을 생성합니다.<p/>
+> **"target": "es5"** => ECMAScript 타겟 버전을 설정합니다: 'ES3' (기본), 'ES5', 'ES2015', 'ES2016', 'ES2017', 'ESNEXT'<br/><br/>
+**"module": "commonjs"** => 모듈 코드 생성 방식을 설정합니다: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', 'ESNext'<br/><br/>
+**"declaration": "true"** => 상응하는 'd.ts' 파일을 생성합니다.<br/><br/>
 **"outDir": "dist"** => 결과물을 저장 할 디렉토리를 설정합니다.
 
 ## Node 모듈 작성
@@ -313,7 +314,7 @@ npm run build
 
 Voila! 코드가 JavaScript로 컴파일 되었습니다! dist라는 디렉토리가 만들어지고 그 안에 `index.js`와 `index.d.ts` 파일이 생성되었습니다. `index.js`는 우리가 작성한 코드가 JavaScript로 컴파일 된 것이고, `index.d.ts` 파일은 TypeScript에서 사용 할 수 있도록 우리 모듈의 타입이 정의 된 것입니다. `package.json` 파일을 조금 더 수정해봅시다.
 
-> `main` 속성을 `dist/index.js`를 바라보도록 수정합니다.<p/>
+> `main` 속성을 `dist/index.js`를 바라보도록 수정합니다.<br/>
 `types` 속성을 만들고 `dist/index.d.ts`로 설정합니다.
 
 ```json

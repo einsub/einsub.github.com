@@ -314,7 +314,7 @@ npm run build
 
 Voila! 코드가 JavaScript로 컴파일 되었습니다! dist라는 디렉토리가 만들어지고 그 안에 `index.js`와 `index.d.ts` 파일이 생성되었습니다. `index.js`는 우리가 작성한 코드가 JavaScript로 컴파일 된 것이고, `index.d.ts` 파일은 TypeScript에서 사용 할 수 있도록 우리 모듈의 타입이 정의 된 것입니다. `package.json` 파일을 조금 더 수정해봅시다.
 
-> `main` 속성을 `dist/index.js`를 바라보도록 수정합니다.<p/>
+> `main` 속성을 `dist/index.js`를 바라보도록 수정합니다.<br/>
 `types` 속성을 만들고 `dist/index.d.ts`로 설정합니다.
 
 ```json
