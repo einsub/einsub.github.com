@@ -44,21 +44,21 @@ published: true
 ## IAM 역할 생성
 - ECR에서 컨테이너 이미지를 가져오거나 awslogs 로그 드라이버를 사용하기 위해 **작업 실행 역할**이 필요
 1. `task-execution-assume-role.json` 파일 생성
-    ```json
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
     {
-      "Version": "2012-10-17",
-      "Statement": [
-        {
-          "Sid": "",
-          "Effect": "Allow",
-          "Principal": {
-            "Service": "ecs-tasks.amazonaws.com"
-          },
-          "Action": "sts:AssumeRole"
-        }
-      ]
+      "Sid": "",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "ecs-tasks.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
     }
-    ```
+  ]
+}
+```
 2. 작업 실행 역할 생성
     ```sh
     $ aws iam --region us-east-1 create-role --role-name ecsTaskExecutionRole --assume-role-policy-document file://task-execution-assume-role.json
