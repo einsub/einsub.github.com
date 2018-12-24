@@ -28,8 +28,7 @@ published: true
     ```sh
     $ sudo curl -o /usr/local/bin/ecs-cli https://s3.amazonaws.com/amazon-ecs-cli/ecs-cli-darwin-amd64-latest
     ```
-2. 유효성 확인
-    - 출력되는 두 문자열을 비교
+2. 출력된 두 문자열을 비교하여 유효성 확인
     ```sh
     $ curl -s https://s3.amazonaws.com/amazon-ecs-cli/ecs-cli-darwin-amd64-latest.md5 && md5 -q /usr/local/bin/ecs-cli
     ```
