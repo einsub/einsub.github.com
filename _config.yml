@@ -30,7 +30,7 @@ markdown: kramdown
 paginate: 5
 paginate_path: "/page:num/"
 inter_post_navigation: true
-highlightjs_theme: "solarized-light"
+highlightjs_theme: "monokai-sublime"
 
 # Archive settings (see https://github.com/jekyll/jekyll-archives/)
 jekyll-archives:
