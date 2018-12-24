@@ -25,21 +25,21 @@ published: true
 ## 설치
 
 1. 다운로드
-    ```sh
-    $ sudo curl -o /usr/local/bin/ecs-cli https://s3.amazonaws.com/amazon-ecs-cli/ecs-cli-darwin-amd64-latest
-    ```
+```sh
+$ sudo curl -o /usr/local/bin/ecs-cli https://s3.amazonaws.com/amazon-ecs-cli/ecs-cli-darwin-amd64-latest
+```
 2. 출력된 두 문자열을 비교하여 유효성 확인
-    ```sh
-    $ curl -s https://s3.amazonaws.com/amazon-ecs-cli/ecs-cli-darwin-amd64-latest.md5 && md5 -q /usr/local/bin/ecs-cli
-    ```
+```sh
+$ curl -s https://s3.amazonaws.com/amazon-ecs-cli/ecs-cli-darwin-amd64-latest.md5 && md5 -q /usr/local/bin/ecs-cli
+```
 3. 실행 권한 부여
-    ```sh
-    $ sudo chmod +x /usr/local/bin/ecs-cli
-    ```
+```sh
+$ sudo chmod +x /usr/local/bin/ecs-cli
+```
 4. 정상 설치 확인
-    ```sh
-    $ ecs-cli --version
-    ```
+```sh
+$ ecs-cli --version
+```
 
 ## IAM 역할 생성
 - ECR에서 컨테이너 이미지를 가져오거나 awslogs 로그 드라이버를 사용하기 위해 **작업 실행 역할**이 필요
@@ -60,13 +60,13 @@ published: true
 }
 ```
 2. 작업 실행 역할 생성
-    ```sh
-    $ aws iam --region us-east-1 create-role --role-name ecsTaskExecutionRole --assume-role-policy-document file://task-execution-assume-role.json
-    ```
+```sh
+$ aws iam --region us-east-1 create-role --role-name ecsTaskExecutionRole --assume-role-policy-document file://task-execution-assume-role.json
+```
 3. 작업 실행 역할과 정책 연결
-    ```sh
-    $ aws iam --region us-east-1 attach-role-policy --role-name ecsTaskExecutionRole --policy-arn arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
-    ```
+```sh
+$ aws iam --region us-east-1 attach-role-policy --role-name ecsTaskExecutionRole --policy-arn arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+```
 
 ## 구성
 
@@ -74,36 +74,36 @@ published: true
 - 구성 정보는 `~/.ecs`에 저장
 
 1. 기본 설정
-    ```sh
-    $ ecs-cli configure --cluster tutorial --region us-east-1 --default-launch-type FARGATE --config-name tutorial
-    ```
+```sh
+$ ecs-cli configure --cluster tutorial --region us-east-1 --default-launch-type FARGATE --config-name tutorial
+```
 2. ECS 설정
     - `cluster_name`: 만들 클러스터 이름
     - `launch_type`: 사용할 시작 유형
     - `region_name`: AWS 리전
     - `config-name`: 부여하고 싶은 설정 이름
-    ```sh
-    $ ecs-cli configure profile --access-key AWS_ACCESS_KEY_ID --secret-key AWS_SECRET_ACCESS_KEY --profile-name tutorial
-    ```
+```sh
+$ ecs-cli configure profile --access-key AWS_ACCESS_KEY_ID --secret-key AWS_SECRET_ACCESS_KEY --profile-name tutorial
+```
 
 ## 클러스터와 보안 그룹 생성
 1. 클러스터 생성
     - `ecs-cli up` 명령으로 클러스터 생성
     - Fargate 시작 유형은 빈 클러스터와 퍼블릭 서브넷 두 개로 구성된 VPC를 생성
-    ```sh
-    $ ecs-cli up
-    ```
+```sh
+$ ecs-cli up
+```
     > 나중에 사용하기 위해 VPC와 Subnet을 기억해둡니다.
 2. 보안 그룹 생성
     - 이전의 VPC ID를 입력하여 보안 그룹을 생성
-    ```sh
-    $ aws ec2 create-security-group --group-name "my-sg" --description "My security group" --vpc-id "VPC_ID"
-    ```
+```sh
+$ aws ec2 create-security-group --group-name "my-sg" --description "My security group" --vpc-id "VPC_ID"
+```
 3. 엑세스 허용
     - 보안 그룹 규칙을 추가하여 80번 포트에 대한 인바운드 접근을 허가
-    ```sh
-    $ aws ec2 authorize-security-group-ingress --group-id "security_group_id" --protocol tcp --port 80 --cidr 0.0.0.0/0
-    ```
+```sh
+$ aws ec2 authorize-security-group-ingress --group-id "security_group_id" --protocol tcp --port 80 --cidr 0.0.0.0/0
+```
 
 ## Compose 파일 생성
 - WordPress 애플리케이션을 생성하는 간단한 Docker compose 파일
