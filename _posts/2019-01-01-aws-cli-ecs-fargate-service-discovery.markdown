@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "AWS CLI로 Fargate ECS Service를 띄우고 Service discovery로 통신하기"
-date: 2019-01-01 15:40:01 
+date: 2019-01-01 19:24:12
 author: Reid
 categories:
   - engineering
@@ -954,7 +954,7 @@ load balancer는 외부와의 통신을 맡아 하기 때문에 public subnet에
 
 ```sh
 $ aws elbv2 create-load-balancer --name ecs-test-lb --subnets subnet-0e8420c6f218aafd6 subnet-0a048beef8a45131b --security-groups sg-0dba29849e569112a
-{{
+{
     "LoadBalancers": [
         {
             "IpAddressType": "ipv4",

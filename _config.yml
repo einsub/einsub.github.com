@@ -31,6 +31,7 @@ paginate: 5
 paginate_path: "/page:num/"
 inter_post_navigation: true
 highlightjs_theme: "monokai-sublime"
+future: true
 
 # Archive settings (see https://github.com/jekyll/jekyll-archives/)
 jekyll-archives:
