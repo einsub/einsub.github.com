@@ -28,61 +28,62 @@ published: true
 ## 목차
 
 - [AWS CLI 구성](#aws-cli-구성)
-  - [Python 설치](#python-설치)
-  - [AWS CLI 설치](#aws-cli-설치)
+    - [Python 설치](#python-설치)
+    - [AWS CLI 설치](#aws-cli-설치)
 - [IAM 사용자 생성과 권한 설정](#iam-사용자-생성과-권한-설정)
-  - [Administrator 사용자로 인증](#administrator-사용자로-인증)
-  - [ECS 관리용 사용자 만들기](#ecs-관리용-사용자-만들기)
-  - [사용자에게 ECS, ECR 권한 부여](#사용자에게-ecs-ecr-권한-부여)
-  - [Task 실행 역할 연결](#task-실행-역할-연결)
-  - [ECS 관리용 사용자로 인증](#ecs-관리용-사용자로-인증)
+    - [Administrator 사용자로 인증](#administrator-사용자로-인증)
+    - [ECS 관리용 사용자 만들기](#ecs-관리용-사용자-만들기)
+    - [사용자에게 AWS Managed Policy 연결](#사용자에게-aws-managed-policy-연결)
+    - [사용자에게 Custom Policy 연결](#사용자에게-custom-policy-연결)
+    - [Task 실행 역할 연결](#task-실행-역할-연결)
+    - [ECS 관리용 사용자로 인증](#ecs-관리용-사용자로-인증)
 - [애플리케이션 작성](#애플리케이션-작성)
-  - [Gate server 작성](#gate-server-작성)
-  - [Data server 작성](#data-server-작성)
-  - [.dockerignore 작성](#dockerignore-작성)
+    - [Gate server 작성](#gate-server-작성)
+    - [Data server 작성](#data-server-작성)
+    - [.dockerignore 작성](#dockerignore-작성)
 - [로컬 환경의 Docker에서 실행하기](#로컬-환경의-docker에서-실행하기)
-  - [Docker 설치](#docker-설치)
-  - [Dockerfile 작성](#dockerfile-작성)
-  - [Docker 이미지 빌드](#docker-이미지-빌드)
-  - [Docker 네트워크 환경 설정](#docker-네트워크-환경-설정)
-  - [구동 테스트](#구동-테스트)
+    - [Docker 설치](#docker-설치)
+    - [Dockerfile 작성](#dockerfile-작성)
+    - [Docker 이미지 빌드](#docker-이미지-빌드)
+    - [Docker 네트워크 환경 설정](#docker-네트워크-환경-설정)
+    - [구동 테스트](#구동-테스트)
 - [ECR에 이미지 올리기](#ecr에-이미지-올리기)
-  - [ECR 로그인](#ecr-로그인)
-  - [Repository 만들기](#repository-만들기)
-  - [ECR에 이미지 등록하기](#ecr에-이미지-등록하기)
+    - [ECR 로그인](#ecr-로그인)
+    - [Repository 만들기](#repository-만들기)
+    - [ECR에 이미지 등록하기](#ecr에-이미지-등록하기)
 - [VPC 인프라 구성](#vpc-인프라-구성)
-  - [기존의 VPC 확인](#기존의-vpc-확인)
-  - [VPC 만들기](#vpc-만들기)
-  - [Subnet 만들기](#subnet-만들기)
-  - [Internet Gateway 만들기](#internet-gateway-만들기)
-  - [NAT Gateway 만들기](#nat-gateway-만들기)
-  - [Routing Table 만들기](#routing-table-만들기)
-  - [Subnet을 Routing Table에 연결](#subnet을-routing-table에-연결)
+    - [기존의 VPC 확인](#기존의-vpc-확인)
+    - [VPC 만들기](#vpc-만들기)
+    - [Subnet 만들기](#subnet-만들기)
+    - [Internet Gateway 만들기](#internet-gateway-만들기)
+    - [NAT Gateway 만들기](#nat-gateway-만들기)
+    - [Routing Table 만들기](#routing-table-만들기)
+    - [Subnet을 Routing Table에 연결](#subnet을-routing-table에-연결)
 - [Load Balancer 구성](#load-balancer-구성)
-  - [Security Group 만들기](#security-group-만들기)
-  - [Load Balancer 만들기](#load-balancer-만들기)
-  - [Target Group 등록](#target-group-등록)
-  - [Listener 생성](#listener-생성)
+    - [Security Group 만들기](#security-group-만들기)
+    - [Load Balancer 만들기](#load-balancer-만들기)
+    - [Target Group 등록](#target-group-등록)
+    - [Listener 생성](#listener-생성)
 - [Service Discovery 구성](#service-discovery-구성)
-  - [Namespace 생성](#namespace-생성)
-  - [Service Discovery의 Service 생성](#service-discovery의-service-생성)
-  - [Private DNS로 주소 변경](#private-dns로-주소-변경)
+    - [Namespace 생성](#namespace-생성)
+    - [Service Discovery의 Service 생성](#service-discovery의-service-생성)
+    - [Private DNS로 주소 변경](#private-dns로-주소-변경)
 - [ECS 구성](#ecs-구성)
-  - [Cluster 생성](#cluster-생성)
-  - [Log Group 생성](#log-group-생성)
-  - [Task Definition 작성 및 등록](#task-definition-작성-및-등록)
-  - [Security Group 만들기](#security-group-만들기)
-  - [Service 생성](#service-생성)
+    - [Cluster 생성](#cluster-생성)
+    - [Log Group 생성](#log-group-생성)
+    - [Task Definition 작성 및 등록](#task-definition-작성-및-등록)
+    - [Security Group 만들기](#security-group-만들기)
+    - [Service 생성](#service-생성)
 - [Auto Scaling Group 설정](#auto-scaling-group-설정)
-  - [Service를 Scale 가능한 타겟으로 등록](#service를-scale-가능한-타겟으로-등록)
-  - [Scaling Policy 연결](#scaling-policy-연결)
+    - [Service를 Scale 가능한 타겟으로 등록](#service를-scale-가능한-타겟으로-등록)
+    - [Scaling Policy 연결](#scaling-policy-연결)
 - [최종 테스트](#최종-테스트)
-  - [동작 테스트](#동작-테스트)
-  - [Scale 테스트](#scale-테스트)
+    - [동작 테스트](#동작-테스트)
+    - [Scale 테스트](#scale-테스트)
 - [ECS의 유지보수](#ecs의-유지보수)
-  - [Task Definition 업데이트](#task-definition-업데이트)
-  - [Service 강제 배포](#service-강제-배포)
-  - [Task Scaling](#task-scaling)
+    - [Task Definition 업데이트](#task-definition-업데이트)
+    - [Service 강제 배포](#service-강제-배포)
+    - [Task Scaling](#task-scaling)
 - [리소스 초기화](#리소스-초기화)
 
 ---
@@ -171,24 +172,51 @@ $ aws iam create-access-key --user-name ecs-user
 
 ECS 관리용 사용자로 인증하기 위해 `AccessKeyId`와 `SecretAccessKey`를 기억해 둡니다.
 
-### 사용자에게 권한 부여
+### 사용자에게 AWS Managed Policy 연결
 
-ECS 권한
+ECS 관리자 권한 정책 연결
 
 ```sh
 $ aws iam attach-user-policy --policy-arn arn:aws:iam::aws:policy/AmazonECS_FullAccess --user-name ecs-user
 ```
 
-ECR 권한
+ECR 관리자 권한 정책 연결
 
 ```
 $ aws iam attach-user-policy --policy-arn arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryFullAccess --user-name ecs-user
 ```
 
-NAT Gateway를 생성 할 때 Elastic IP(EIP)를 부여해야 하는데, 이를 위해 EC2 권한이 필요합니다.
+### 사용자에게 Custom Policy 연결
+
+NAT Gateway를 생성 할 때 Elastic IP(EIP)를 부여하는 권한과 AutoScaling을 설정 할 때 역할을 전달하는 권한은 직접 policy를 만들어 연결합니다.
+
+다음 파일을 작성해서 `aws iam create-policy` 명령에 인자로 전달합니다.
+
+ecs-user-policy.json
+```json
+{
+	"Version": "2012-10-17",
+	"Statement": [{
+		"Effect": "Allow",
+		"Action": [
+			"iam:PassRole"
+		],
+		"Resource": "arn:aws:iam::759375304948:role/ApplicationAutoscalingECSRole"
+	}, {
+		"Effect": "Allow",
+		"Action": [
+			"ec2:DescribeAddresses",
+			"ec2:AllocateAddress",
+			"ec2:DescribeInstances",
+			"ec2:AssociateAddress"
+		],
+		"Resource": "*"
+	}]
+}
+```
 
 ```sh
-$ aws iam attach-user-policy --policy-arn arn:aws:iam::aws:policy/AmazonEC2FullAccess --user-name ecs-user
+$ aws iam attach-user-policy --policy-arn arn:aws:iam::759375304948:policy/ecsUserPolicy --user-name ecs-user
 ```
 
 ### Task 실행 역할 연결
@@ -277,6 +305,7 @@ ecs-test
 │   ├── index.js
 │   ├── package.json
 │   └── scale-config.json
+├── ecs-user-policy.json
 └── task-execution-assume-role.json
 ```
 
@@ -326,7 +355,8 @@ app.listen(4000, () => console.log('Data server listening on port 4000!'));
 
 로컬에 설치된 모듈들과 디버깅 로그들이 이미지에 포함되는 것을 막기 위해 .dockerignore 파일을 만들어서 무시합니다.
 
-.dockerignore
+gate-server/.dockerignore<br/>
+data-server/.dockerignore
 
 ```text
 node_modules
