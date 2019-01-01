@@ -1688,7 +1688,7 @@ scale-config.json
   "TargetValue": 40.0,
   "PredefinedMetricSpecification": 
     {
-      "PredefinedMetricType": "ASGAverageCPUUtilization"
+      "PredefinedMetricType": "ECSServiceAverageCPUUtilization"
     }
 }
 ```
