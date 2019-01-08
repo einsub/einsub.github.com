@@ -17,12 +17,14 @@ published: true
 ---
 ## CircleCI 환경 변수 설정
 
-CircleCI는 미리 설정해둔 환경변수를 빌드 과정에서 사용 할 수 있습니다. 기본으로 탑재된 환경변수 외에 사용자가 직접 추가 할 수 있으므로, AWS 계정 정보등을 입력해두면 편리합니다.
+CircleCI는 미리 설정해둔 환경변수를 빌드 과정에서 사용 할 수 있습니다. 기본으로 탑재된 환경변수 외에 사용자가 직접 추가 할 수 있으므로, AWS 계정 정보등을 입력해두면 편리합니다. 참고로 AWS_ACCESS_KEY_ID와 AWS_SECRET_ACCESS_KEY, AWS_DEFAULT_REGION은 configure 과정에서 필요하므로 꼭 입력해야 합니다.
 
 |name|value|
 |---|---|
 |APP_NAME|MyApp|
 |AWS_ACCOUNT_ID|268238064276|
+|AWS_ACCESS_KEY_ID|AKICMLISJFNLASDJCKAW|
+|AWS_SECRET_ACCESS_KEY|AZ9mD+CidjSDjncv93SDjmcSjF92jCpajfWjjQnx|
 |AWS_DEFAULT_REGION|ap-northeast-2|
 |AWS_ECR_URL|268238064276.dkr.ecr.ap-northeast-2.amazonaws.com|
 
