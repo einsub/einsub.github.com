@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "JWT를 이용한 토큰 관리와 보안 전략"
+title: "Refresh Token과 Sliding Sessions 전략을 활용한 JWT의 보안 전략"
 date: 2019-02-07 12:52:23
 author: Reid
 categories:
@@ -15,9 +15,9 @@ tags:
 published: true
 ---
 
-사용자의 상태를 유지하지 않는 stateless한 서비스를 운영할 때는 보안 이슈가 문제가 됩니다. 이를 해결하기 위한 보안 솔루션 중 하나가 JSON Web Token입니다.
+사용자의 상태를 유지하지 않는 stateless한 서비스를 운영할 때는 보안 이슈가 문제가 됩니다. 이를 해결하기 위한 보안 솔루션 중 하나가 [JSON Web Token](https://jwt.io/)입니다.
 
-이를 이용해서 보안 정책을 세우는 경우 토큰 관리에 여러 전략을 이용 할 수 있습니다. JWT가 제공하는 기본적인 AccessToken 외에 RefreshToken을 도입한다거나 Sliding Session 전략을 활용할 수 있는데 이에 따라 그 장/단점이 달라집니다.
+이를 이용해서 보안 정책을 세우는 경우 토큰 관리에 여러 전략을 이용 할 수 있습니다. JWT가 제공하는 기본적인 AccessToken 외에 RefreshToken을 도입한다거나 Sliding Sessions 전략을 활용할 수 있는데 이에 따라 그 장/단점이 달라집니다.
 
 ## AccessToken 사용
 
@@ -47,9 +47,9 @@ JWT는 토큰의 만료 시간을 설정 할 수 있는데, 이를 30분 내의 
 
 - 기기나 AccessToken이 탈취되면 오랫동안 제약 없이 사용이 가능합니다.
 
-## Sliding Session 전략과 함께 AccessToken 사용
+## Sliding Sessions 전략과 함께 AccessToken 사용
 
-보안성과 편의성 모두를 잡을 수는 없을까를 고민하다가 나온 것이 Sliding Session 전략입니다.  이 전략은 세션을 지속적으로 이용하는 유저에게 자동으로 만료 기한을 늘려주는 방법입니다.
+보안성과 편의성 모두를 잡을 수는 없을까를 고민하다가 나온 것이 Sliding Sessions 전략입니다.  이 전략은 세션을 지속적으로 이용하는 유저에게 자동으로 만료 기한을 늘려주는 방법입니다.
 
 구현 방법은 다양합니다만 주로 유효한 AccessToken을 가진 클라이언트의 요청에 대해 서버가 새로운 AccessToken을 발급해주는 방법을 사용합니다. 매 요청마다 새로운 토큰을 내려주는 것도 가능하지만, 글을 작성하다가 인증이 만료되는 참담한 경우를 막기 위해 글 작성을 시작할 때 발급해준다거나, 쇼핑몰에서 장바구니에 아이템을 담는 경우에 발급해주는 등의 전략을 사용하는 것도 괜찮은 방법입니다. 또 클라이언트가 토큰의 iat(토큰 발급 시간)속성을 참조해서 갱신 요청을 하는 방법도 있습니다.
 
@@ -62,7 +62,7 @@ JWT는 토큰의 만료 시간을 설정 할 수 있는데, 이를 30분 내의 
 
 #### 단점
 
-- 접속이 주로 단발성으로 이루어지는 서비스의 경우 Sliding Session 전략의 효과가 크지 않습니다.
+- 접속이 주로 단발성으로 이루어지는 서비스의 경우 Sliding Sessions 전략의 효과가 크지 않습니다.
 - 긴 만료 시간을 갖는 AccessToken을 사용하는 경우 로그인을 전혀 하지 않아도 되는 경우가 발생합니다.
 
 ## AccessToken과 RefreshToken을 사용
@@ -87,11 +87,11 @@ RefreshToken은 서버에서 따로 저장을 하고 있기 때문에 강제로 
 - 클라이언트는 AccessToken의 만료에 대한 연장 요청을 구현해야 합니다.
 - 인증 만료 기간의 자동 연장이 불가능합니다.
 
-### Sliding Session 전략과 함께 AccessToken과 RefreshToken을 사용
+### Sliding Sessions 전략과 함께 AccessToken과 RefreshToken을 사용
 
-AccessToken의 Sliding Session 전략이 AccessToken 자체의 만료 기간을 늘려주었다면, 이 전략은 RefreshToken의 만료 기간을 늘려줍니다.
+AccessToken의 Sliding Sessions 전략이 AccessToken 자체의 만료 기간을 늘려주었다면, 이 전략은 RefreshToken의 만료 기간을 늘려줍니다.
 
-RefreshToken의 만료 기간이 늘어나기 때문에 AccessToken + Sliding Session 전략처럼 빈번하게 만료 기간 연장을 해줄 필요가 없고, 사용자의 유휴 허용 기간을 RefreshToken 기간에 근접하게 늘려줍니다.
+RefreshToken의 만료 기간이 늘어나기 때문에 AccessToken + Sliding Sessions 전략처럼 빈번하게 만료 기간 연장을 해줄 필요가 없고, 사용자의 유휴 허용 기간을 RefreshToken 기간에 근접하게 늘려줍니다.
 
 반면 사용자가 접속을 뜸하게 하는 경우에도 RefreshToken의 만료 기간의 늘어나기 때문에, 핸드폰이 탈취되는 등의 경우에 지속적인 이용이 가능 할 수 있습니다. 이를 막는 방법으로 인증이 확실히 요구되는 경우 비밀번호를 한번 더 묻는다거나, 비밀번호 변경 등의 이벤트가 발생 할 때 강제로 RefreshToken을 만료시키는 처리를 해주는 것이 좋습니다.
 
@@ -108,6 +108,6 @@ RefreshToken의 만료 기간이 늘어나기 때문에 AccessToken + Sliding Se
 
 일반적인 웹 서비스처럼 cookie등을 이용해 세션 관리를 하는 방식을 사용할 수 없는 stateless한 REST API등은 토큰 방식의 보안을 이용 할 수 밖에 없습니다. stateless하기 때문에 매 요청에 대한 인증을 거쳐야 하는데, 이는 데이터베이스 등으로부터 토큰을 얻어오는 추가적인 I/O 작업이 불가피하고 이는 성능의 하락으로 이어집니다. 이를 해결해주기 위한 솔루션이 바로 JWT입니다.
 
-JWT는 이런 장점과 함께 위에서 살펴봤듯이 여러가지 문제점들이 존재합니다. 토큰의 탈취에 대한 취약성, 서버의 클라이언트 제어 불가, 빈번한 로그인 요청 등의 문제에 대한 해결 방법은 RefreshToken이나 Sliding Session 등의 전략을 도입하는 것입니다. 하지만 이러한 전략들 역시 추가적인 IO 작업을 위한 성능 감소나, 편의를 위해 보안이 취약해지는 상황등이 발생할 가능성이 있습니다.
+JWT는 이런 장점과 함께 위에서 살펴봤듯이 여러가지 문제점들이 존재합니다. 토큰의 탈취에 대한 취약성, 서버의 클라이언트 제어 불가, 빈번한 로그인 요청 등의 문제에 대한 해결 방법은 RefreshToken이나 Sliding Sessions 등의 전략을 도입하는 것입니다. 하지만 이러한 전략들 역시 추가적인 IO 작업을 위한 성능 감소나, 편의를 위해 보안이 취약해지는 상황등이 발생할 가능성이 있습니다.
 
 서비스가 결제가 필요한 보안에 민감한 컨텐츠를 다루고 있다면 비밀번호 한번 더 입력하는 것이 크게 문제가 되지 않습니다. 반면, 게시물에 글을 작성할때마다 비밀번호를 입력해야 한다면 사용자들은 매우 귀찮아 할 것입니다. 결국 모든 것을 얻을 수는 없습니다. 서비스마다 가진 고유한 특성을 고려해 보안 수준을 높일지, 사용자 편의성을 높일지를 결정해야 합니다.
