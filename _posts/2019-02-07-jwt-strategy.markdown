@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Refresh Token과 Sliding Sessions 전략을 활용한 JWT의 보안 전략"
+title: "Refresh Token과 Sliding Sessions를 활용한 JWT의 보안 전략"
 date: 2019-02-07 12:52:23
 author: Reid
 categories:
