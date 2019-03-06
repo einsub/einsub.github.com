@@ -20,7 +20,7 @@ published: true
 ## 용어 설명
 
 #### GeoJSON
-JSOM 형태로 지형 데이터를 정의하는 포맷입니다. 이 포맷에 대한 상세한 명세는 [여기](https://tools.ietf.org/html/rfc7946#section-3.1)에 정의되어 있습니다. [GeoJSON 오브젝트](https://docs.mongodb.com/manual/reference/geojson/)의 기본 문법 형식은 다음과 같습니다:
+JSON 형태로 지형 데이터를 정의하는 포맷입니다. 이 포맷에 대한 상세한 명세는 [여기](https://tools.ietf.org/html/rfc7946#section-3.1)에 정의되어 있습니다. [GeoJSON 오브젝트](https://docs.mongodb.com/manual/reference/geojson/)의 기본 문법 형식은 다음과 같습니다:
 ```json
 <field>: { type: <GeoJSON type>, coordinates: <coordinates> }
 ```
@@ -42,7 +42,7 @@ db.collection.createIndex({ <location field>: '2d' })
 
 ## 샘플 데이터
 
-연습용으로 사용할 데이터를 추가합니다. 제가 제주도에 살고 있는 관계로 저희 집 근처의 아끼는 카페 둘을 넣어두겠습니다.
+연습용으로 사용할 데이터를 추가합니다. 제가 제주도에 살고 있는 관계로 저희 집 근처의 아끼는 카페 둘을 넣어두겠습니다. GeoJSON 형태를 연습해보기 위해 사용 할 places 컬렉션에 둘, 레거시 좌표점 형태를 연습해보기 위해 사용 할 legacyplaces 컬렉션에 둘씩 추가합니다. 실제 작업에는 두 방식 중 하나를 선택하면 됩니다.
 
 ```json
 db.places.insert({
@@ -64,6 +64,16 @@ db.places.insert({
     ]
   }
 })
+
+db.legacyplaces.insert({
+  name: '제주커피박물관 Baum',
+  location: [ 126.8990639, 33.4397954 ]
+})
+
+db.legacyplaces.insert({
+  name: '신산리 마을카페',
+  location: [ 126.8759347, 33.3765812 ]
+})
 ```
 참고로 Baum은 저희집에서 10km 정도 떨어진 10분 거리에 위치하고 마을카페는 저희 동네인 신산리에 있습니다.
 
@@ -73,7 +83,7 @@ db.places.insert({
 
 엄밀히 말해서, 지역에 포함되는지 여부를 알려준다기 보다는 주어진 영역과 문서들의 영역에 교집합이 있는지를 찾아주는 쿼리 셀렉터입니다. 하지만, 문서가 GeoJSON 좌표점을 가지고 있는 경우라면 요청하는 GeoJSON 타입에 `Polygon`을 입력해서 해당 좌표의 포함 여부를 알 수 있습니다. 입력값으로 GeoJSON 형태만 허용하며, `$geometry` 표현식을 이용하여 이를 정의합니다.
 
-`$geoIntersects`는 구형 기하학(spherical geometry)을 이용합니다. 지형 인덱스가 필수는 아니지만, 사용할 것이라면 2dsphere만 지원하고, 이를 이용해 쿼리 성능을 높일 수 있습니다.
+`$geoIntersects`는 구형 기하학(spherical geometry)을 이용합니다. 지형 인덱스가 필수는 아니지만, 사용할거라면 2dsphere를 선택해야합니다. 이를 이용해 쿼리 성능을 높일 수 있습니다.
 
 ```json
 {
@@ -118,7 +128,7 @@ db.places.insert({
 
 ### 두 번째, $geoWithin
 
-이 쿼리 셀렉터는 확실히 요청하는 영역안에 포함된 문서들을 반환해주는 기능을 합니다. 입력값으로 GeoJSON 형태의 폴리곤 계열 뿐만이 아니라 레거시 좌표점으로 정의된 shape도 허용합니다. shape은 박스, 폴리곤, 원 형태를 지원합니다. GeoJSON 형태로 사용하는 경우, [`$geometry`](https://docs.mongodb.com/manual/reference/operator/query/geometry/) 표현식으로 정의하고 레거시 좌표점으로 사용하는 경우, [`$box`](https://docs.mongodb.com/manual/reference/operator/query/box/), [`$polygon`](https://docs.mongodb.com/manual/reference/operator/query/polygon/), [`$center`](https://docs.mongodb.com/manual/reference/operator/query/center/), [`$centerSphere`](https://docs.mongodb.com/manual/reference/operator/query/centerSphere/)으로 정의 할 수 있습니다.
+이 쿼리 셀렉터는 확실히 요청하는 영역안에 포함된 문서들을 반환해주는 기능을 합니다. 입력값으로 GeoJSON 형태의 폴리곤 계열 뿐만이 아니라 레거시 좌표점으로 정의된 shape도 허용합니다. shape은 박스, 폴리곤, 원 형태를 지원합니다. GeoJSON 형식을 사용하는 경우, [`$geometry`](https://docs.mongodb.com/manual/reference/operator/query/geometry/) 표현식으로 정의하고 레거시 좌표점을 사용하는 경우, [`$box`](https://docs.mongodb.com/manual/reference/operator/query/box/), [`$polygon`](https://docs.mongodb.com/manual/reference/operator/query/polygon/), [`$center`](https://docs.mongodb.com/manual/reference/operator/query/center/), [`$centerSphere`](https://docs.mongodb.com/manual/reference/operator/query/centerSphere/)으로 정의 할 수 있습니다.
 
 `$geometry`로 GeoJSON 오브젝트를 정의할 때의 문법은 `$geoIntersects`와 동일하며 다음과 같습니다:
 
@@ -145,13 +155,13 @@ db.places.insert({
 }
 ```
 
-`$geoWithin`은 지형 인덱스가 필수는 아니지만, 사용할 것이라면 2d와 2dsphere 둘 모두를 지원하고, 이를 이용해 쿼리 성능을 높일 수 있습니다. 이 쿼리는 `$near`, `$nearSphere`처럼 정렬된 결과를 내려주지 않는 대신, 더 빠른 속도를 보장합니다.
+`$geoWithin`은 지형 인덱스가 필수는 아니지만, 사용할 것이라면 2d와 2dsphere 둘 모두를 지원하고, 이를 이용해 쿼리 성능을 높일 수 있습니다. 이 쿼리는 `$near`, `$nearSphere`처럼 정렬된 결과를 내려주지는 않는 대신, 더 빠른 속도를 보장합니다.
 
-`$center`는 원 영역을 표현하는 연산자이며 평면 지형에 특화되어 있습니다. `$center`의 두 번째 파라메터인 radius는 [decimal degrees](http://en.wikipedia.org/wiki/Decimal_degrees) 단위를 사용해야 하는데, 우리에게 필요한 미터나 킬로미터로 변환하기 위해서는 복잡한 [변환 작업](https://en.wikipedia.org/wiki/Decimal_degrees)을 거쳐야 합니다.
+`$geoWithin`이 받아들이는 Shape 중, `$center`는 원 영역을 표현하는 연산자이며 평면 지형에 특화되어 있습니다. `$center`의 두 번째 파라메터인 radius는 [decimal degrees](http://en.wikipedia.org/wiki/Decimal_degrees) 단위를 사용해야 하는데, 우리에게 필요한 미터나 킬로미터로 변환하기 위해서는 복잡한 [변환 작업](https://en.wikipedia.org/wiki/Decimal_degrees)을 거쳐야 합니다.
 
 반면 `$centerSphere`는 구형 지형을 지원하고, radius는 radian 단위를 이용하므로 어렵지 않게 변환을 할 수 있습니다. 거리를 radian으로 변환하려면 거리에서 지구 전체의 radius 값인 6,378.1km로 나누어줍니다.
 
-`$center`는 평면 지형을 이용하므로 2d 인덱스밖에 사용 할 수 없지만, `$centerSphere`는 2d와 2dsphere 인덱스 모두를 사용 할 수 있으며, 극지방에서의 오차율을 줄여주려면 2dsphere 인덱스를 이용하는 것이 좋습니다.
+`$center`는 평면 기하학을 이용하므로 2d 인덱스밖에 사용 할 수 없지만, `$centerSphere`는 2d와 2dsphere 인덱스 모두를 사용 할 수 있으며, 극지방에서의 오차율을 줄여주려면 2dsphere 인덱스를 이용하는 것이 좋습니다.
 
 #### 예제: 신산리마을회관 근방 5km 내에서 카페를 찾아라.
 
@@ -232,7 +242,7 @@ GeoJSON 포맷을 이용할 때에는 `$geometry` 연산자를 사용해야 하�
 }
 ```
 
-GeoJSON의 경우 `$minDistance`와 `$maxDistance`를 미터 단위로 설정하여 검색 거리를 조절 할 수 있고, 레거시 좌표점을 이용하는 경우radian 값으로 설정할 수 있습니다. 단, `$near`는 `$minDistance`의 설정이 불가능합니다.
+GeoJSON의 경우 `$minDistance`와 `$maxDistance`를 미터 단위로 설정하여 검색 거리를 조절 할 수 있고, 레거시 좌표점을 이용하는 경우, radian 값으로 설정할 수 있습니다. 단, `$near`는 `$minDistance`의 설정이 불가능합니다.
 
 이 쿼리 셀렉터를 사용 할 때 참고해야 하는 사항 중 하나는 한 쿼리가 특수 인덱스(Special index)를 두 개 이상 가질 수 없다는 점입니다. 그래서 `$text` 쿼리를 이용한 문자열 검색을 동시에 처리 할 수 없습니다.
 
@@ -282,7 +292,7 @@ GeoJSON의 경우 `$minDistance`와 `$maxDistance`를 미터 단위로 설정하
 { $geoNear: { <geoNear options> } }
 ```
 
-설정 가능한 옵션들은 다음과 같습니다:
+설정 가능한 옵션은 다음과 같습니다:
 
 #### Options
 
@@ -344,4 +354,4 @@ GeoJSON의 경우 `$minDistance`와 `$maxDistance`를 미터 단위로 설정하
 
 ## 나가며
 
-위치 기반 업소 탐색과 거리를 측정하는 등의 작업이 필요한 프로젝트를 진행하면서 잘못된 이해로 몇 번의 시행착오를 겪은 후,  MongoDB 매뉴얼의 딱딱하고 기술적인 문서 말고 필요한 상황에 알맞은 쿼리를 제안해주는 글이 있으면 좋겠다고 생각했습니다. 이 글이 조금이라도 도움이 되셨길 바랍니다.
+위치 기반 업소 탐색과 거리를 측정하는 등의 작업이 필요한 프로젝트를 진행하면서 잘못된 이해로 몇 번의 시행착오를 겪은 후,  [MongoDB 매뉴얼](https://docs.mongodb.com/manual/tutorial/calculate-distances-using-spherical-geometry-with-2d-geospatial-indexes/)의 딱딱하고 기술적인 문서 말고 필요한 상황에 알맞은 쿼리를 제안해주는 글이 있으면 좋겠다고 생각했습니다. 이 글이 조금이라도 도움이 되셨길 바랍니다.
