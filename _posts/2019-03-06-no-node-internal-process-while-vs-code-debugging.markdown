@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "VS Code로 node.js 애플리케이션 디버깅 팁"
+title: "VS Code로 node.js 애플리케이션을 디버깅 할 때의 소소한 팁"
 date: 2019-03-06 16:57:24
 author: Reid
 categories:
