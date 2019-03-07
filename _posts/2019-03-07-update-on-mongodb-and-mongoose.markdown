@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "MongoDB API와 Mongoose에서 update 쿼리를 사용 할 때 주의점"
+title: "MongoDB와 Mongoose에서 update를 사용 할 때 주의할 점"
 date: 2019-03-08 00:46:24
 author: Reid
 categories:
