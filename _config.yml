@@ -23,7 +23,7 @@ description: >
 baseurl: "" # the subpath of your site, e.g. /blog/
 url: "https://blog.ull.im" # the base hostname & protocol for your site
 cover: "/assets/header_image/header_image"
-logo: "/assets/logo.jpeg"
+logo: "/assets/reid.png"
 
 # Build settings
 markdown: kramdown
