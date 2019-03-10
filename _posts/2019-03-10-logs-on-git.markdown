@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "좋은 커밋(commit) 메시지를 위한 영어 사전"
+title: "좋은 git commit 메시지를 위한 영어 사전"
 date: 2019-03-10 16:55:48
 author: Reid
 categories:
