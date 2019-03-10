@@ -36,8 +36,8 @@ future: true
 # Archive settings (see https://github.com/jekyll/jekyll-archives/)
 jekyll-archives:
   enabled:
-#    - categories
-#    - tags
+  #  - categories
+  #  - tags
   layout: 'archive'
   permalinks:
     category: '/category/:name/'
