@@ -96,20 +96,20 @@ AWS의 각종 기능을 terminal에서 명령어만으로 동작시키기 위해
 
 `python --version` 명령으로 이미 설치되어 있는지 여부를 확인하고 설치 되어 있지 않다면 다음 명령으로 설치합니다.
 
-```sh
+```console
 $ brew install python
 ```
 
 Python 패키지 관리자인 pip도 `pip --version`으로 설치 여부를 확인하고, 없으면 다음 명령으로 설치합니다.
 
-```bash
+```console
 $ curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 $ python get-pip.py --user
 ```
 
 ### AWS CLI 설치
 
-```bash
+```console
 $ pip install awscli --upgrade --user
 ```
 
@@ -123,7 +123,7 @@ export PATH=${HOME}/Library/Python/2.7/bin:${PATH}
 
 정상적으로 설치가 되었는지 확인합니다.
 
-```bash
+```console
 $ aws --version
 aws-cli/1.16.60 Python/2.7.15 Darwin/18.2.0 botocore/1.12.50
 ```
@@ -134,7 +134,7 @@ aws-cli/1.16.60 Python/2.7.15 Darwin/18.2.0 botocore/1.12.50
 
 ECS 관리용 사용자를 생성하기 위해 일단 administrator 사용자로 인증합니다.
 
-```sh
+```console
 $ aws configure
 AWS Access Key ID [None]: AKACKWJDFANFAKJSDIWE
 AWS Secret Access Key [None]: TKKsdnFC8weKJdlwD981KWEnca0/H2Lqwnc9/QA1
@@ -144,7 +144,7 @@ Default output format [None]: json
 
 ### ECS 관리용 사용자 만들기
 
-```sh
+```console
 $ aws iam create-user --user-name ecs-user
 {
     "User": {
@@ -157,7 +157,7 @@ $ aws iam create-user --user-name ecs-user
 }
 ```
 
-```sh
+```shell
 $ aws iam create-access-key --user-name ecs-user
 {
     "AccessKey": {
@@ -176,13 +176,13 @@ ECS 관리용 사용자로 인증하기 위해 `AccessKeyId`와 `SecretAccessKey
 
 ECS 관리자 권한 정책 연결
 
-```sh
+```shell
 $ aws iam attach-user-policy --policy-arn arn:aws:iam::aws:policy/AmazonECS_FullAccess --user-name ecs-user
 ```
 
 ECR 관리자 권한 정책 연결
 
-```
+```console
 $ aws iam attach-user-policy --policy-arn arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryFullAccess --user-name ecs-user
 ```
 
@@ -215,7 +215,7 @@ ecs-user-policy.json
 }
 ```
 
-```sh
+```console
 $ aws iam attach-user-policy --policy-arn arn:aws:iam::759375304948:policy/ecsUserPolicy --user-name ecs-user
 ```
 
@@ -240,7 +240,7 @@ task-execution-assume-role.json
 }
 ```
 
-```sh
+```console
 $ aws iam create-role --role-name ecsTaskExecutionRole --assume-role-policy-document file://task-execution-assume-role.json
 {
     "Role": {
@@ -266,7 +266,7 @@ $ aws iam create-role --role-name ecsTaskExecutionRole --assume-role-policy-docu
 }
 ```
 
-```sh
+```console
 $ aws iam attach-role-policy --role-name ecsTaskExecutionRole --policy-arn arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
 ```
 
@@ -274,7 +274,7 @@ $ aws iam attach-role-policy --role-name ecsTaskExecutionRole --policy-arn arn:a
 
 후속 작업은 Administrator가 아닌 처음에 만들었던 ECS 관리용 사용자를 이용하기 위해 인증 정보를 변경합니다.
 
-```sh
+```console
 $ aws configure
 AWS Access Key ID [None]: AKICMLISJFNLASDJCKAW
 AWS Secret Access Key [None]: AZ9mD+CidjSDjncv93SDjmcSjF92jCpajfWjjQnx
@@ -288,7 +288,7 @@ Default output format [None]: json
 
 최종적인 디렉토리 구조는 다음과 같습니다.
 
-```
+```plaintext
 ecs-test
 ├── data-server
 │   ├── .dockerignore
@@ -311,7 +311,7 @@ ecs-test
 
 ### Gate server 작성
 
-```sh
+```console
 $ npm install --save express request
 ```
 
@@ -334,7 +334,7 @@ app.listen(80, () => console.log('Server listening on port 80!'));
 
 ### Data server 작성
 
-```sh
+```console
 $ npm install --save express
 ```
 
@@ -358,7 +358,7 @@ app.listen(4000, () => console.log('Data server listening on port 4000!'));
 gate-server/.dockerignore<br/>
 data-server/.dockerignore
 
-```text
+```plaintext
 node_modules
 npm-debug.log
 ```

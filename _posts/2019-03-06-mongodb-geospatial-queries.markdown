@@ -21,20 +21,20 @@ published: true
 
 #### GeoJSON
 JSON 형태로 지형 데이터를 정의하는 포맷입니다. 이 포맷에 대한 상세한 명세는 [여기](https://tools.ietf.org/html/rfc7946#section-3.1)에 정의되어 있습니다. [GeoJSON 오브젝트](https://docs.mongodb.com/manual/reference/geojson/)의 기본 문법 형식은 다음과 같습니다:
-```json
+```plaintext
 <field>: { type: <GeoJSON type>, coordinates: <coordinates> }
 ```
 GeoJSON의 `type`에는 `Point`, `LineString`, `Polygon`, `MultiPoint`, `MultiLineString`, `MultiPolygon`, `GeometryCollection`이 있습니다. 정의된 타입들에서 볼 수 있듯이, 좌표점 뿐만이 아니라 선분에서 폴리곤, 여러 도형 집합들까지 다양하게 지원하고 있습니다. 문법 형식에서 `coordinates` 필드는 `type`에 따라 여러 좌표점을 포함 할 수 있습니다.
 
 #### 레거시 좌표(legacy coordinate point)
 MongoDB 2.4 이전에 사용되던 지형 데이터 포맷입니다. GeoJSON에 비해 단순한 형태를 갖습니다. 평면 좌표계의 한 점을 표현 할 수 있습니다. 기본 문법 형식은 다음과 같습니다:
-```json
+```plaintext
 <field>: [<longitude>, <latitude>]
 ```
 
 #### 지형 인덱스 (Geospatial Indexes)
 지형 정보에 대한 쿼리를 지원하기 위해 MongoDB는 지형 인덱스를 지원합니다. 인덱스는 **2dsphere**, **2d**의 두 종류입니다. 2dshphere는 지구와 같은 구형태의 지형을 기반으로 계산하는데 사용되고, 2d는 x, y축의 평면 지형을 기반으로 계산하는데 사용됩니다. 다음 형태로 인덱스를 지정 할 수 있습니다.
-```json
+```javascript
 db.collection.createIndex({ <location field>: '2dshpere' })
 db.collection.createIndex({ <location field>: '2d' })
 ```
@@ -44,7 +44,7 @@ db.collection.createIndex({ <location field>: '2d' })
 
 연습용으로 사용할 데이터를 추가합니다. 제가 제주도에 살고 있는 관계로 저희 집 근처의 아끼는 카페 둘을 넣어두겠습니다. GeoJSON 형태를 연습해보기 위해 사용 할 places 컬렉션에 둘, 레거시 좌표점 형태를 연습해보기 위해 사용 할 legacyplaces 컬렉션에 둘씩 추가합니다. 실제 작업에는 두 방식 중 하나를 선택하면 됩니다.
 
-```json
+```javascript
 db.places.insert({
   name: '제주커피박물관 Baum',
   location: {
@@ -85,7 +85,7 @@ db.legacyplaces.insert({
 
 `$geoIntersects`는 구형 기하학(spherical geometry)을 이용합니다. 지형 인덱스가 필수는 아니지만, 사용할거라면 2dsphere를 선택해야합니다. 이를 이용해 쿼리 성능을 높일 수 있습니다.
 
-```json
+```javascript
 {
   <location field>: {
     $geoIntersects: {
@@ -100,7 +100,7 @@ db.legacyplaces.insert({
 
 #### 예제: 신산리안에 있는 카페를 찾아라.
 
-```json
+```javascript
 > db.places.find({
   location: {
     $geoIntersects: {
@@ -132,7 +132,7 @@ db.legacyplaces.insert({
 
 `$geometry`로 GeoJSON 오브젝트를 정의할 때의 문법은 `$geoIntersects`와 동일하며 다음과 같습니다:
 
-```json
+```javascript
 {
   <location field>: {
     $geoWithin: {
@@ -147,7 +147,7 @@ db.legacyplaces.insert({
 
 레거시 좌표점으로 shape을 정의할 때의 문법은 다음과 같습니다:
 
-```json
+```javascript
 {
   <location field>: {
     $geoWithin: { <shape operator>: <coordinates> }
@@ -167,7 +167,7 @@ db.legacyplaces.insert({
 
 앞의 예제는 특정 영역에 포함된 카페를 찾는 문제였지만, 이번 문제는 특정한 위치를 기준으로 일정 거리 내의 모든 카페를 찾는 문제입니다. Shape으로 `$centerSphere`를 이용합니다.
 
-```json
+```javascript
 > db.legacyplaces.find({
   location: {
     $geoWithin: {
@@ -191,7 +191,7 @@ db.legacyplaces.insert({
 
 GeoJSON 포맷을 이용할 때에는 `$geometry` 연산자를 사용해야 하며, 2dsphere 인덱스를 사용 할 수 있습니다.
 
-```json
+```javascript
 {
   <location field>: {
     $near: {
@@ -206,7 +206,7 @@ GeoJSON 포맷을 이용할 때에는 `$geometry` 연산자를 사용해야 하�
 }
 ```
 
-```json
+```javascript
 {
   <location field>: {
     $nearSphere: {
@@ -223,7 +223,7 @@ GeoJSON 포맷을 이용할 때에는 `$geometry` 연산자를 사용해야 하�
 
 하지만, 레거시 좌표점을 이용할 때에는 2d 인덱스를 사용합니다.
 
-```json
+```javascript
 {
   <location field>: {
     $near: [ <x>, <y> ],
@@ -232,7 +232,7 @@ GeoJSON 포맷을 이용할 때에는 `$geometry` 연산자를 사용해야 하�
 }
 ```
 
-```json
+```javascript
 {
   <location field>: {
     $nearSphere: [ <x>, <y> ],
@@ -248,7 +248,7 @@ GeoJSON의 경우 `$minDistance`와 `$maxDistance`를 미터 단위로 설정하
 
 #### 예제: 성산일출봉에서 12km의 카페들을 가까운 순서대로 찾아라
 
-```json
+```javascript
 > db.places.find({
   location: {
     $nearSphere: {
@@ -288,7 +288,7 @@ GeoJSON의 경우 `$minDistance`와 `$maxDistance`를 미터 단위로 설정하
 
 이 stage는 반환하는 문서 개수를 제한하거나 추가 검색 쿼리를 정의하는 등 다양한 옵션 설정이 가능합니다.
 
-```json
+```javascript
 { $geoNear: { <geoNear options> } }
 ```
 
@@ -313,7 +313,7 @@ GeoJSON의 경우 `$minDistance`와 `$maxDistance`를 미터 단위로 설정하
 
 #### 예제: 신산리마을회관에서 10km 이내의 카페들을 가까운 순으로 검색하고 각각의 거리를 구하라
 
-```json
+```javascript
 > db.places.aggregate([
   {
     $geoNear: {

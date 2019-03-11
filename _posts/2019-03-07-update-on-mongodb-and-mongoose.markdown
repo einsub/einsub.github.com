@@ -57,7 +57,8 @@ const Menu = mongoose.model('MenuMongoose', new mongoose.Schema({
 ```
 
 우리가 기대했던 그대로입니다.
-```json
+
+```javascript
 [
   { _id: 5c807a308c90a52efb4e4003, name: 'Americano', price: 10000, __v: 0 },
   { _id: 5c807a308c90a52efb4e4004, name: 'Latte', price: 5000, __v: 0 }
@@ -83,7 +84,7 @@ const MongoClient = require('mongodb').MongoClient;
 ```
 
 뭔가 이상하죠? Americano 어디갔어?
-```json
+```javascript
 [
   { _id: 5c807976b79c7f2e34614f1c, price: 10000 },
   { _id: 5c807976b79c7f2e34614f1d, name: 'Latte', price: 5000 }
@@ -106,15 +107,15 @@ MongoDB API에서 `update` 함수는 결국 deprecated 되었습니다. 이 함�
 
 재미있는 사실을 문서에서 찾아 볼 수 있습니다. deprecated 된 update 함수의 명세에서 이 두 번째 파라메터에 대한 설명이 이렇게 적혀있습니다:
 
-<pre>
-document    object    The update document.
-</pre>
+```plaintext
+document object  The update document.
+```
 
 하지만 새로 만들어진 함수들에는 이렇게 적혀있죠:
 
-<pre>
-update      object    The update operations to be applied to the document
-</pre>
+```plaintext
+update   object  The update operations to be applied to the document.
+```
 
 이제 더 이상 update 함수의 인자는 **문서**가 아니고 **오퍼레이션**이니, 헷갈리지 말라고 명백하게 밝히고 있습니다. 사실 두 인자는 여전히 동일한 방식으로 동작하지만, 오해가 생길 소지를 없앤 것이죠. 하지만 Mongoose 처럼 `$set` 연산자가 없어도, 알아서 `$set`을 붙여주는 처리는 하지 않았습니다.
 
