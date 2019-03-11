@@ -27,6 +27,9 @@ logo: "/assets/reid-circle.png"
 
 # Build settings
 markdown: kramdown
+kramdown:
+  input: GFM
+  syntax_highlighter: rough
 paginate: 5
 paginate_path: "/page:num/"
 inter_post_navigation: true
