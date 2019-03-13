@@ -12,7 +12,7 @@ tags:
   - mongoose
   - unit test
   - sinon
-published: true
+published: false
 ---
 
 > 원문: [Mongoose models and unit tests: The definitive guide](https://codeutopia.net/blog/2016/06/10/mongoose-models-and-unit-tests-the-definitive-guide/)
