@@ -271,7 +271,7 @@ Use new Metro configuration in react-native cli
 </code>
 </pre>
 
-### Refactor
+### REFACTOR
 
 전면 수정이 있을 때 사용합니다.
 
@@ -287,7 +287,7 @@ Refactor MockNativeMethods in Jest
 </code>
 </pre>
 
-### Simplify
+### SIMPLIFY
 
 복잡한 코드를 단순화 할 때 사용합니다. Refactor의 성격이 강하나 이보다는 약한 수정의 경우 이용하면 좋습니다.
 
@@ -305,7 +305,7 @@ Simplify loop arithmetic in GetCPUInfo
 </code>
 </pre>
 
-### Update
+### UPDATE
 
 개정이나 버전 업데이트가 있을 때 사용합니다. Fix와는 달리 Update는 잘못된 것을 바로잡는 것이 아니라는 점에 주의해야 합니다. 원래도 정상적으로 동작하고 있었지만, 수정, 추가, 보완을 한다는 개념입니다. 코드보다는 주로 문서나 리소스, 라이브러리등에 사용합니다.
 
@@ -314,12 +314,9 @@ Simplify loop arithmetic in GetCPUInfo
 > A를 B로 업데이트 합니다.
 
 <pre>
-<code class="plaintext">
+<code class="plaintext">Update acorn to 6.1.0
 </code>
 </pre>
-```
-Update acorn to 6.1.0
-```
 
 > A를 B하기 위해 업데이트 합니다
 
@@ -332,7 +329,7 @@ Update babelHelpers with Babel 7 support
 </code>
 </pre>
 
-#### Improve
+### IMPROVE
 
 향상이 있을 때 사용합니다. 호환성, 테스트 커버리지, 성능, 검증 기능, 접근성 등 다양한 것들이 목적이 될 수 있습니다.
 
@@ -353,7 +350,7 @@ Improve iOS's accessibilityLabel performance by up to 20%
 </code>
 </pre>
 
-### Make
+### MAKE
 
 주로 기존 동작의 변경을 명시합니다.
 
@@ -378,7 +375,7 @@ make IsolateData store ArrayBufferAllocator
 </code>
 </pre>
 
-### Implement
+### IMPLEMENT
 
 코드가 추가된 정도보다 더 주목할 만한 구현체를 완성시켰을 때 사용합니다.
 
@@ -407,7 +404,7 @@ Implement an in-memory cache store to save parsed and validated documents and pr
 </code>
 </pre>
 
-### Revise
+### REVISE
 
 Update와 비슷하나 문서의 개정이 있을 때 주로 사용합니다.
 
@@ -420,7 +417,7 @@ Update와 비슷하나 문서의 개정이 있을 때 주로 사용합니다.
 </code>
 </pre>
 
-### Correct
+### CORRECT
 
 주로 문법의 오류나 타입의 변경, 이름 변경 등에 사용합니다.
 
@@ -437,7 +434,7 @@ Correct async_hooks resource names
 </code>
 </pre>
 
-### Ensure
+### ENSURE
 
 무엇이 확실하게 보장받는다는 것을 명시합니다. if 구문처럼 조건을 확실하게 주었을 때에도 사용 될 수 있습니다. 'Make sure'도 같은 용도로 사용될 수 있습니다.
 
@@ -454,7 +451,7 @@ Ensure options.flag defaults to 'r' in readFile
 </code>
 </pre>
 
-### Prevent
+### PREVENT
 
 특정한 처리를 못하게 막습니다
 
@@ -480,7 +477,7 @@ Prevent an infinite loop when attempting to render portals with SSR.
 </code>
 </pre>
 
-### Avoid
+### AVOID
 
 'Prevent'는 못하게 막지만, 'Avoid'는 회피합니다. if 구문으로 특정한 동작을 제외시키는 경우에도 사용 할 수 있습니다.
 
@@ -509,7 +506,7 @@ Avoid double reload event when reloading JS
 </code>
 </pre>
 
-### Move
+### MOVE
 
 코드의 이동이 있을 때 사용합니다.
 
@@ -525,7 +522,7 @@ move initialization of node-report into pre_execution.js
 </code>
 </pre>
 
-### Rename
+### RENAME
 
 이름 변경이 있을 때 사용합니다.
 
@@ -540,7 +537,7 @@ Rename node-report suite to report
 </code>
 </pre>
 
-### Allow
+### ALLOW
 
 Make와 비슷하지만, 허용을 표현할 때 사용합니다.
 
@@ -556,7 +553,7 @@ Allow an optional function to resolve the rootValue, passing the DocumentNode AS
 </code>
 </pre>
 
-### Verify
+### VERIFY
 
 검증 코드를 넣을 때 주로 사용합니다.
 
@@ -569,7 +566,7 @@ Allow an optional function to resolve the rootValue, passing the DocumentNode AS
 </code>
 </pre>
 
-### Set
+### SET
 
 변수 값을 변경하는 등의 작은 수정에 주로 사용합니다.
 
@@ -582,7 +579,7 @@ Allow an optional function to resolve the rootValue, passing the DocumentNode AS
 </code>
 </pre>
 
-### Pass
+### PASS
 
 파라메터를 넘기는 처리에 주로 사용합니다.
 
