@@ -12,10 +12,10 @@ tags:
   - mongoose
   - unit test
   - sinon
-published: false
+published: true
 ---
 
-> 원문: [Mongoose models and unit tests: The definitive guide](https://codeutopia.net/blog/2016/06/10/mongoose-models-and-unit-tests-the-definitive-guide/)
+> 원문: [Mongoose models and unit tests: The definitive guide](https://codeutopia.net/blog/2016/06/10/mongoose-models-and-unit-tests-the-definitive-guide/) - [Jani Hartikainen](mailto:jani@codeutopia.net)
 
 Mongoose는 node.js로 보다 쉽게 MongoDB를 사용하게 해주는 훌륭한 도구입니다. 모델 관련 로직을 코드 사방에 뿌려놓는 대신, Mongoose의 모델을 이용하면 설계가 매우 쉬워집니다. 데이터를 쿼리하는 것도 쉽고 빠르며, 사용자가 직접 정의한 쿼리 로직도 필요하다면 모델에 숨겨 둘 수 있습니다.
 
