@@ -216,6 +216,10 @@ ecs-user-policy.json
 ```
 
 ```console
+$ aws iam create-policy --policy-name ecsUserPolicy --policy-document file://ecs-user-policy.json
+```
+
+```console
 $ aws iam attach-user-policy --policy-arn arn:aws:iam::759375304948:policy/ecsUserPolicy --user-name ecs-user
 ```
 
