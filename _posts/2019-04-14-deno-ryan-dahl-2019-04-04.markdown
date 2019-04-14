@@ -1,0 +1,606 @@
+---
+layout: post
+title: "node.js 제작자가 만든 Deno - 자바스크립트의 새로운 접근"
+date: 2019-04-14 23:18:15
+author: Reid
+categories:
+  - engineering
+tags:
+  - ryan dahl
+  - deno
+  - javascript
+  - typescript
+  - node.js
+published: true
+---
+
+node.js를 만든 Ryan Dahl이 JS Fest 2019 Spring 컨퍼런스에서 새 프로젝트인 'Deno'를 소개했습니다. 'A New Way to JavaScript'라는 제목의 이 발표에서 Ryan은 Deno가 node.js와 어떻게 다른지, 어떤 부분에서 새로워졌는지를 설명합니다. 도전적인 이 프로젝트에 관심 있으신 분들을 위해 축약, 정리해보았습니다.
+
+[![](/assets/2019-04-14-deno-about.png)](2019-04-14-deno-about.png)
+
+- 유투브: [https://www.youtube.com/watch?v=z6JRlx5NC9E&t=419s](https://www.youtube.com/watch?v=z6JRlx5NC9E&t=419s)
+- 프리젠테이션: [https://bit.ly/2U0lQmZ](https://bit.ly/2U0lQmZ)
+- 페이스북: [https://www.facebook.com/JSFestua/](https://www.facebook.com/JSFestua/)
+
+# 면책 조항
+
+Deno는 실험적인 프로젝트이며, 이 발표 역시 실험적인 것들을 좋아하는 사람들을 위한 것입니다. 혹시 그런 사람이 아니라면, 이 발표를 듣고 패닉에 빠지지 않길 바랍니다. Node는 협업에서 활발하게 사용중이고 어디로 사라져 버리지 않습니다. 너무 걱정하지 마세요.
+
+# Deno 소개
+
+Deno는 Node와 비슷한 문제를 푸는 JavaScript, 그리고 TypeScript를 실행하기 위한 새로운 Command-line Runtime입니다.
+
+## 기반 기술
+
+Deno의 기반 기술은 다음과 같습니다:
+
+- V8 JavaScript Runtime
+- Rust (C++를 대체)
+- Tokio (이벤트 루프로 사용)
+- TypeScript
+
+## 개발 이유
+
+Node는 여전히 괜찮은 소프트웨어인데, 왜 이런 작업을 시작했는지 많은 사람들이 묻습니다. 사실 Node가 처음 개발 될 때의 2009년도 당시의 자바스크립트는 지금과 완전히 달랐고, 도무지 편리함이라고는 찾아 볼 수 없었습니다.
+
+JavaScript의 좋아진 점들에는 이런 것들이 있습니다.
+
+- promise / async / await
+- ES Modules
+- Typed Arrays 
+
+반면에 여전히 문제점들이 있습니다.
+
+- 중앙 집중형 모듈 시스템
+- 추가 지원이 필요한 legacy API들
+- 빈약한 보안
+
+Node는 웹 서버로 시작되었습니다. 모듈들을 어디에 넣을까 고민하다가, 아.. node modeuls에 넣을까? 해서 만들어진 것이 node_modules 디렉토리입니다. 디자인적으로 아쉬운 점이 있습니다. 그래서 어쩔 수 없이 npm과 같은 중앙 서버가 존재해야 합니다. 웹은 원래 분산 형태여야 하는데 말이죠.
+
+보안에서도 아쉬운 점이 있습니다. 리소스에 대한 권한 설정이 전혀 없기 때문에 주요 자원들을 누구나 접근 할 수 있습니다. 예를 들어, SSH Key같은 것들 말입니다. 이러한 것들을 샌드박스로 감싸는 것으로 문제를 해결 할 수 있습니다. 이 문제는 Node 뿐만이 아니고 Python이나 Ruby도 가지고 있긴 합니다.
+
+## 재미있고 생산적인 스크립팅 시스템
+
+좋은 스크립팅 플랫폼은 현상에 안주하지 말고 계속 발전해야 합니다. 오랫동안 정적 컴파일 언어 전문가로 지내면서, rust나 go로 low-level 시스템 프로그래밍을 하는 것은 당연한 일이었습니다. 하지만, 그보다 훨씬 간단한 일들을 하기 위해 그런 무거운 도구들을 이용하고 싶지는 않습니다. 이 것이 동적 언어가 가야 할 길이라고 생각합니다.
+
+Deno는 Node의 디자인 실수를 교정하기 위해 호환성을 과격하게 깨버립니다.
+
+- 단 하나의 유일한 모듈 시스템으로 ES 모듈 사용
+- 보안을 강화
+- 브라우저 호환성 유지
+
+Third-party 코드를 링크 시키는데 Http URL을 사용 할 수 있습니다. 이 URL을 이용해 스스로 리소스를 다운로드 하고 패치하게 됩니다. Deno 스스로가 패키지 매니저인 셈입니다. 따라서 더 이상 npm과 같은 중앙 집중형 패키지 매니저는 사용 할 필요가 없습니다.
+
+사용자는 디스크나 네트워크, 또는 허락이 필요한 기타 작업에 접근 할 때 기본적으로 권한을 요구합니다.
+
+Deno 프로그램의 서브셋<sup>subset</sup>이면서 전역 deno 오브젝트를 사용하지 않는 프로그램은 기본적으로 아무런 수정 없이도 현대의 웹 브라우저에서 구동이 되도록 설계했습니다.
+
+# 첫 번째 예제
+
+## 간단한 REPL
+
+먼저 간단한 REPL 동작을 살펴봅시다.
+
+```sh
+~/deno> deno
+> 1+2
+3
+>
+```
+
+## Deno 도움말
+
+이번에는 Deno의 도움말을 출력해봅시다.
+
+```sh
+~/deno> deno -h
+Usage: deno script.ts
+
+ Options:
+        --allow-read      Allow file system read access
+        --allow-write     Allow file system write access
+        --allow-net       Allow network access
+        --allow-env       Allow environment access
+        --allow-run       Allow running subprocesses
+    -A, --allow-all       Allow all permissions
+        --no-prompt       Do not use prompts
+    -h, --help            Print this message
+    -D, --log-debug       Log debug output
+    -v, --version         Prnit the version
+    -r, --reload          Reload source code cache (recompile TypeScript)
+        --v8-options      Print V8 command line options
+        --types           Print runtime TypeScript declarations
+        --prefetch        Prefetch the dependencies
+        --info            Show source file related info
+        --fmt             Format code
+
+Environment variables:
+        DENO_DIR          Set deno's base directory
+        NO_COLOR          Set to diable color
+```
+
+`--allow-`로 시작되는 옵션은 샌드박스에서 opt out 시킬 수 있는 권한에 대한 설정입니다. `--types`는 런타임이 제공하는 TypeScript의 타입들을 출력합니다. Deno는 TypeScript가 build-in되어 있습니다. 물론 JavaScript로도 실행 할 수 있습니다. TypeScript는 JavaScript의 다음 버전이라고 할 만큼 훌륭합니다. MS가 환상적인 일을 해낸 것 같아요. JavaScript는 빠른 프로토타이핑에 유용하고, 천천히 타입을 정의해가며 재사용 가능한 모듈을 만들고 싶다면 TypeScript를 사용하는 것이 좋습니다.
+
+## Deno Types
+
+런타임이 제공하는 타입들을 살펴봅시다.
+
+```sh
+~/deno> deno --types
+// Copyright 2018-2019 the Deno authors. All right reserved. MIT license.
+
+/// <reference no-default-lib="true" />
+/// <reference lib="esnext" />
+
+declare namespace Deno {
+  /** The current process id of the runtime. */
+  export let pid: number;
+  /** Reflects the NO_COLOR environment variable: https://no-color.org/ */
+  export let noColor: boolean;
+  /** Path to the current deno process's executable file. */
+  export let execPath: string;
+  /** Check if running in terminal.
+   *
+   *       console.log(Deno.isTY().stdout);
+   */
+  export function isTTY(): {
+    stdin: boolean;
+    stdout: boolean;
+    stderr: boolean;
+  };
+  /** Exit the Deno process with optional exit code.
+  export function exit(exitCode?: number): never;
+  /** Returns a snapshot of the environment variables at invocation. Mutating a 
+   * property in the object will set that variable in the environment for
+```
+
+Deno의 런타임 type들에 대한 정의가 출력됩니다.
+
+```sh
+~/deno> deno
+> Deno.pid
+94562
+> Deno
+{ args, noColor, pid, env, exit, isTTY, execPath, chdir, cwd, File, open, openSync, stdin, stdout, stderr, read, readSync, write, writeSync, seek, seekSync, close, copy, toAsyncIterator, SeekMode, Buffer, readAll, readAllSync, mkdirSync, mkdir, makeTempDirSync, makeTempDir, chmodSync, chmod, removeSync, remove, renameSync, rename, readFileSync, readFile, readDirSync, readDir, copyFileSync, copyFile, readlinkSync, readlink, statSync, lstatSync, stat, lstat, synlinkSync, symlink, writeFileSync, writeFile, ErrorKind, DenoError, permissions, revokePermission, truncateSync, truncate, connect, dial, listen, metrics, resources, run, Process, inspect, build, platform, version, core, Console, stringifyArgs, DomIterableMixin }
+```
+
+`pid`는 Deno가 동작하고 있는 프로세스의 id를 출력합니다. 그냥 `Deno`를 입력하면 Deno의 전역적인 주요 오브젝트들이 출력됩니다. 이는 flat한 namespace로 모든 native 기능들을 담고 있는 일종의 POSIX API와 같습니다.
+
+## cat 프로그램
+
+코드를 작성해봅시다.
+
+**cat.js**
+```javascript
+console.log(Deno.args)
+```
+
+```sh
+~/deno> deno cat.js /etc/passwd
+[ "cat.js", "/etc/passwd" ]
+```
+
+저는 코드를 작성할 때 첫 줄에 넘어오는 인자들을 출력하는 것을 좋아합니다. 이제 좀 더 기능을 넣어봅시다.
+
+**cat.js**
+```javascript
+console.log(Deno.args)
+
+let filename = Deno.args[1]
+async function main() {
+   let f = await Deno.open(filename)
+   console.log(f)
+}
+
+main()
+```
+
+첫 번째 인자를 `filename` 변수로 받아서, 이 파일을 엽니다. Deno는 비동기 I/O이고 `open` 함수는 promise를 반환하니까 `await`을 사용해야 합니다. 아직 top-level await을 지원하지 않으니 async 함수로 둘러싸줘야 합니다.
+
+```sh
+~/deno> deno cat.js /etc/passwd
+[ "cat.js", "/etc/passwd" ]
+Deno requests read access to "/etc/passwd". Grant?
+[a/y/n/d (a = allow always, y = allow once, n = deny once, d = deny always)]
+```
+
+Deno는 기본으로 샌드박스처럼 동작하기 때문에 권한을 필요로 합니다. POSIX의 리소스 시스템에서 file descriptor는 기본적인 개념입니다. 파일이나 소켓을 열 때 할당 받죠. Deno 역시 리소스가 중심입니다.
+
+**cat.js**
+```javascript
+console.log(Deno.args)
+
+let filename = Deno.args[1]
+async function main() {
+  // 파일을 열기 전
+  console.table(Deno.resources())
+  let f = await Deno.open(filename);
+  console.log(f)
+  // 파일을 연 후
+  console.table(Deno.resources())
+}
+
+main();
+```
+
+이번에는 파일을 열기 전의 Deno 리소스들과 파일을 연 후의 Deno 리소스가 어떻게 변화하는지 살펴보겠습니다.
+
+```sh
+~/deno> deno cat.js /etc/password -A
+[ "cat.js", "/etc/passwd" ]
+(index) Values
+0       "stdin"
+1       "stdout"
+2       "stderr"
+
+file { rid: 3 }
+
+(index) Values
+0       "stdin"
+1       "stdout"
+2       "stderr"
+3       "fsFile"
+```
+
+파일을 열기 전에는 매우 유닉스 스러운 결과를 보여줍니다. 하지만, 파일을 연 후에는 새로운 file descriptor가 출현했습니다. Deno는 descriptor를 close 시킬 수도 있습니다.
+
+**cat.js**
+```javascript
+console.log(Deno.args)
+
+let filename = Deno.args[1]
+
+async function main() {
+  // 파일을 열기 전
+  console.table(Deno.resources())
+  let f = await Deno.open(filename);
+  console.log(f)
+  // 파일을 연 후
+  console.table(Deno.resources())
+  Deno.close(3)
+  // 파일을 닫은 후
+  console.table(Deno.resources())
+}
+
+main();
+```
+
+```sh
+~/deno> deno cat.js /etc/password -A
+[ "cat.js", "/etc/passwd" ]
+(index) Values
+0       "stdin"
+1       "stdout"
+2       "stderr"
+3       "fsFile"
+
+file { rid: 3 }
+
+(index) Values
+0       "stdin"
+1       "stdout"
+2       "stderr"
+```
+
+이번에는 아까 만들어졌던 file descriptor가 없어졌습니다.
+
+이제 제대로 된 cat 프로그램을 만들어봅시다. '표준 출력<sup>standard out</sup>'으로 출력하고, 이를 스트림으로 복사<sup>copy</sup> 할 수 있습니다. 표준 출력은 그 자체로 리소스이기 때문에 이런 함수를 고민해 볼 수 있었습니다. 이 함수에 대해 깊게 들어가진 않겠지만, [Zero copy](https://en.wikipedia.org/wiki/Zero-copy) 기법을 이용하여 최적의 형태로 리소스를 제공할 수 있습니다. 그리고 이 기법이 go의 표준 라이브러리 모델이죠.
+
+**cat.js**
+```javascript
+console.log(Deno.args)
+
+let filename = Deno.args[1]
+async function main() {
+  // 파일을 열기전
+  console.table(Deno.resources())
+  let f = await Deno.open(filename);
+  console.log(f)
+  await Deno.copy(Deno.stdout, f)
+}
+
+main();
+```
+
+```sh
+~/deno> deno cat.js /etc/password -A
+```
+
+실행하면 '표준 출력'이 출력됩니다.
+
+# 두 번째 예제
+
+## 파일 이름 찾기
+
+이 번에는 좀 더 웹과 관련있는 것들을 얘기해봅시다. Node에는 `__filename`이라는 변수가 있었습니다. 제가 왜 이런 식으로 이름을 지었는지 후회됩니다. 그럼 웹에서는 파일을 어떻게 가져오나요? `location.href`라는 속성으로 파일 url을 출력하게 됩니다. 그리고 또 하나, 조금 이상한 `import meta URL`이라는 것도 있습니다.
+
+**ex2_foo.js**
+```javascript
+export function foo() {
+  console.log("foo", location.href)
+  console.log("foo", import.meta.url)
+}
+```
+
+**ex2.js**
+```javascript
+import { foo } from "./ex2_foo.js"
+
+console.log(location.href)
+console.log(import.meta.url)
+foo();
+```
+
+```sh
+~/deno> deno ex2.js
+file:///Users/rld/ex2/ex2.js
+file:///Users/rld/ex2/ex2.js
+foo file:///Users/rld/ex2/ex2.js
+foo file:///Users/rld/ex2/ex2_foo.js
+```
+
+import 된 ex2_foo.js에서 `location.href`는 ex2.js를, `import meta url`은 ex2_foo.js를 출력합니다. 즉, `location`은 메인 파일, `import mata url`은 `__filename`과 똑같이 동작하는 것을 볼 수 있습니다.
+
+이 예제로 브라우저 호환성을 설명하고 싶었습니다. 잠재적으로 이런 것들이 웹 브라우저에서 사용 될 수 있습니다.
+
+## Echo 서버 
+
+이번에는 네트워크를 활용하는 TCP 서버를 만들어보겠습니다. 단순히 데이터를 받아서 같은 데이터를 넘겨주는 서버입니다.
+
+**echo_server.ts**
+```typescript
+const { listen } = Deno;
+
+async function main() {
+  let s = listen("tcp", ":8000");
+  console.log(s)
+}
+
+main();
+```
+
+```sh
+~/deno> deno echo_server.js
+Deno requests network access to "listen". Grant?
+[a/y/n/d (a = allow always, y = allow once, n = deny once, d = deny always)]
+
+~/deno> deno echo_server.js --allow-net
+ListenImpl { rid: 3 }
+```
+
+네트워크에 접근 할 때도 역시 권한을 묻는 것을 볼 수 있습니다.
+
+이번에는 연결을 수락해봅시다.
+
+**echo_server.ts**
+```typescript
+const { listen } = Deno;
+
+let hello = new TextEncoder().encode("hello")
+console.log(hello)
+
+async function main() {
+  let s = listen("tcp", ":8000");
+  console.log(s)
+  let socket = await s.accept();
+  socket.write(hello);
+}
+
+main();
+```
+
+Deno는 기본적으로 Uint8Array와 같은 Typed Array 레벨에서 동작합니다. 따라서 소켓에 문자열을 적으면, 우리가 아무런 처리를 하지 않아도 TCP와 Typed Array에 의해 알아서 처리되고 묵시적인 인코딩도 필요 없습니다. 여기서 하려는 것은 이 메시지를 인코딩하고 Uint8Array로 넣는 것입니다.
+
+```sh
+~/deno> deno echo_server.js --allow-net
+Uint8Array [ 104, 101, 108, 108, 111, 10 ]
+ListenImpl { rid: 3 }
+
+~/deno> nc localhost 8000
+hello
+```
+
+이번에는 소켓을 그냥 통째로 복사해봅시다.
+
+**echo_server.ts**
+```javascript
+const { listen, socket } = Deno;
+
+let hello = new TextEncoder().encode("hello")
+console.log(hello)
+
+async function main() {
+  let s = listen("tcp", ":8000");
+  console.log(s)
+  while (true) {
+    let socket = await s.accept();
+    socket.write(hello);
+    copy(socket, socket);
+  }
+}
+
+main();
+```
+
+```sh
+~/deno> nc localhost:8000
+hello
+askldjlasd
+askldjlasd
+```
+
+이렇게 해서 echo 서버가 만들어졌습니다.
+
+Node 자체적으로 http 서버가 built-in 되어 있는 것과 달리, Deno는 TCP 서버로 동작 시킬 수 있습니다. Deno는 꽤 괜찮은 모듈 시스템이 있기 때문에 Http 서버도 만들어 볼 수 있습니다.
+
+## HTTP 서버 
+
+**http_server.ts**
+```typescript
+import { serve } from "https://deno.land/std/http/server.ts";
+
+async function main() {
+  let s = serve(":8000");
+  console.log(s)
+}
+
+main();
+```
+
+```sh
+~/deno> deno http_server.ts
+Compiling file:///Users/rld/deno_ex2/http_server.ts
+Downloading https://deno.land/std/http/server.ts
+{}
+```
+
+Deno는 위 예제처럼 모듈을 스스로 다운로드하고 패치 합니다. 스스로 패키지 매니저인 셈이죠.
+
+**http_server.ts**
+```typescript
+import { serve } from "https://deno.land/std/http/server.ts";
+
+let hello = new TextEncoder().encode("hello\n")
+
+async function main() {
+  let s = serve(":8000");
+  for await (let req of s) {
+    console.log("got a req");
+    req.respond({ body: hello });
+  }
+}
+
+main();
+```
+
+```sh
+~/deno> deno http_server.ts -A
+Compiling file:///Users/rld/deno_ex2/http_server.ts
+got a req
+got a req
+got a req
+got a req
+```
+
+Http 서버는 Deno의 구현체가 아니고 3rd-party 모듈입니다. 이 소프트웨어에서 사용하고 있는 모듈에 대해 자세히 알아보려면 `--info` 옵션을 사용 할 수 있습니다.
+
+```sh
+~/deno> deno http_server.ts --info
+
+local: /Users/rld/deno_ex2/http_server.ts
+type: TypeScript
+compiled: /Users/rld/Library/Caches/deno/gen/90dd507719c68281ff7f908351d36546e48b561c.js
+map: /Users/rld/Library/Caches/deno/gen/90dd507719c68281ff7f908351d36546e48b561c.js.map
+deps:
+file:///Users/rld/deno_ex2/http.server.ts
+  https://war.githubusercontent.com/denoland/deno_std/master/http/server.ts
+    https://war.githubusercontent.com/denoland/deno_std/master/io/bufio.ts
+      https://war.githubusercontent.com/denoland/deno_std/master/io/util.ts
+        https://war.githubusercontent.com/denoland/deno_std/master/strings/strings.ts
+```
+
+`/Users/rld/Library/Caches/deno/gen/` 폴더에 컴파일 된 source와 map등의 asset들이 잔뜩 들어 있는 것을 확인 할 수 있습니다. 또 `/Users/rld/Library/Caches/deno/deps/` 폴더에는 HTTPS, raw github 사용자 컨텐츠, dino 표준 라이브러리등이 있습니다. 여기는 다운로드 된 것 들이 들어갑니다. 비행기에서 코딩을 해야 하는 것 처럼, 인터넷이 안되는 상황에서 이런 것들은 도움이 될 수 있습니다. 또 다른 예로, Deno 옵션의 `DENO_DIR`을 설정하면 이 캐시 디렉토리를 가지고 URL을 바라보는 모듈들을 이용 할 수 있습니다.
+
+# Deno는 OS
+
+|---|---|
+|Linux|Deno|
+|---|---|
+|Processes|Web Workers|
+|Syscalls|Ops|
+|File descriptors (fd)|Resource ids (rid)|
+|Scheduler|Tokio|
+|Userland: libc++ / glib / boost|deno_std|
+|/proc/$$/stat|deno.metrics()|
+|man pages|deno --types|
+|---|---|
+
+Deno는 node보다는 OS와 비슷하게 설계되었습니다. 기본적으로 사용자 코드를 신뢰하지 않고, 보통의 프로세스가 하는 것 처럼, Web Worker로 다른 프로세스를 구동 할 수 있습니다. Ops는 syscalls처럼 VM으로부터 출력되는 방법을 제공합니다. Deno에서 VM으로부터 출력되는 모든 것들은 Uint8Array 버퍼를 통해 Op가 관장하고 있습니다. VM 밖에서 관리되는 리소스들, 즉 파일이나 소켓 같은 것들은 file descriptor처럼 Resource ids로 관리합니다.
+
+[![](/assets/2019-04-14-deno-internal-design-1.png)](2019-04-14-deno-internal-design-1.png)
+
+Deno 내부에서 함수를 개발하는 사람들은, Native 기능에 접근하기 위해 V8을 직접 건드릴 필요 없이 Typed Array를 주고 받으면 됩니다. 너무 간소화 되었긴 하지만 이 그림들이 이해를 도울 수 있기를 바랍니다.
+
+[![](/assets/2019-04-14-deno-internal-design-2.png)](2019-04-14-deno-internal-design-2.png)
+
+Deno의 디자인 철학은 '모든 것들은 Ops와 Typed Array로 주고 받는다'입니다. 이 것이 VM을 관리하는 좋은 방법이라고 생각합니다.
+
+# Deno 임베드 시키기
+
+자바스크립트는 다른 소프트웨어에 삽입<sup>embed</sup> 시키는 데에도 유용하게 사용 할 수 있습니다.
+
+- 데이터베이스는 종종 map-reduce 기능을 위해 자바스크립트를 사용
+- lambda@edge나 cloudflare workes와 같은 serverless 제품에서 사용
+
+하지만 node에게 자신의 껍질 속을 보여주기에는 보안 상 문제가 되거나, 너무 복잡하거나, npm 모듈을 설치해야 하는 등, 기타 다른 이유로 인해 부적절한 경우가 있습니다. 이런 이유로 docker 컨테이너를 사용해야 할 수도 있습니다.
+
+Deno는 독립적으로 실행 가능하게 배포 되지만, 임베디드 시키는 것 역시 가능합니다. V8을 직접 이용하는 것은 너무 복잡합니다. 그래서 중간자적인 역할로 Deno가 다른 티어<sup>tier</sup>로 접근 할 수 있습니다. Rust crates로 publish되는 low-level API는 V8과 Typed Array를 주고 받는 방법으로 사용 됩니다. 이걸로 모든 것들을 해결 할 수 있습니다.
+
+하지만 이 문제를 해결하는데 어려운 부분은, JavaScript의 promise와 Rust의 future를 매핑하는 것입니다. future는 JavaScript의 promise와 같은 기능으로, 이것들은 자동으로 매핑되지 않기 때문에 외부 함수 인터페이스<sup>FFI</sup>가 강력한데, 이는 다음과 같은 콜백 구현으로 해결 할 수 있습니다.
+
+```rust
+fn dispatch(
+  &mut self,
+  control: &[u8],
+  zero_copy_buf: deno_buf
+) -> (bool, Box<Op>)
+```
+
+이 것은 매우 중요합니다. 모든 것들이 이 Ops위에서 구현되며 TypedArray를 주고 받고 있기 때문입니다. 아직 해결해야 할 문제들이 조금 있지만요.
+
+# Deno 표준 모듈
+
+Node는 모든 것들이 그 안에 통합되어 있었지만, Deno는 표준 모듈을 따로 분리했습니다. 보통 작은 모듈들을 npm으로부터 가져와서 사용하는데, 그러다보니 한 소프트웨어가 10,000개의 의존성을 가지는 경우를 볼 수 있습니다. 모듈의 표준 셋을 만들어두고, 공용 유틸리티들을 이 표준 영역에 넣어주면 이런 문제들로부터 벗어 날 수 있습니다. 외부 모듈 의존성이 없기 때문에, 표준 모듈에서 가져다 쓰면 되기 때문입니다.
+
+Deno 표준 모듈: [https://github.com/denoland/deno_std](https://github.com/denoland/deno_std)
+
+그래서 Deno의 핵심 구현은 가능한 작은 크기를 유지 할 수 있습니다. 하지만 이 것이 유효하려면 질 좋은 표준 모듈을 가지고 있어야 하겠지요.
+
+- 외부 의존성이 없기 때문에 "의존성 지옥"으로부터 부분적 해결
+- 모든 코드는 내가 리뷰 (피상적으로라도): 이상한 코드 넣는 거 의심 안해도 됩니다. ㅋㅋ
+- 각 Deno 릴리즈마다 표준 모듈들도 태그 됨: [https://deno.land/std@v0.3.2/](https://deno.land/std@v0.3.2/)
+
+# Deno의 성능
+
+## 구동 시간 벤치마크
+
+[![](/assets/2019-04-14-deno-performance-1.png)](/assets/2019-04-14-deno-performance-1.png)
+
+성능을 끌어내기 위해 지속적으로 벤치마크를 하고 있습니다. 구동 시작 시간은 그림처럼 Node에 비해 3배 정도 빠른 모습을 보여줍니다. 매 커밋마다 성능을 측정하면서 조심스럽게 기능을 추가하고 있습니다. 몇 개월간의 측정치를 살펴보면, 처음에는 구동시간이 2초가 넘었었는데, 지금은 0.01초대로 줄었습니다.
+
+## HTTP 서버 벤치마크
+
+[![](/assets/2019-04-14-deno-performance-2.png)](/assets/2019-04-14-deno-performance-2.png)
+
+I/O 성능은 아직 빠르지 않습니다. 메시지 전달 인터페이스 위에 있는 Ops 모델이 현재 전체의 병목<sup>bottlenect</sup>을 일으키고 있습니다. 앞으로 이 부분을 개선 할 것입니다. 녹색이 순수 Rust 웹 서버, 제일 아래의 보라색이 Deno 서버, 파란색이 Node 서버입니다.
+
+[![](/assets/2019-04-14-deno-performance-3.png)](/assets/2019-04-14-deno-performance-3.png)
+
+이 것은 성능 문제에 관심이 많은 분들에게 재미있는 주제가 될 것 같습니다. Rust 서버와 cli 사이의 차이는 아까 얘기했던 Ops의 직렬화<sup>serialization</sup> 이슈입니다. 현재 무엇이 문제인지 우리는 이해하고 있으며, 곧 해결 될 것으로 보고 있습니다. 이 문제가 해결 되면 성능은 매우 높아질 걸로 예상합니다. 여러분이 하루만 투자하면 영웅이 될 수도 있습니다. ㅋㅋ
+
+# 앞으로의 여정
+
+여름이 끝기 전에 1.0을 출시 할 계획입니다.
+
+## 선결 과제
+
+- I/O 성능 이슈 해결
+- 코드 로딩 파이프라인의 병렬화 (모듈 다운로드 초기화 진행바)
+- TLS/SSL
+- 외부 모듈에 대한 file lock
+- Deno 코어 스냅샷 기능
+- Debugger
+
+## 추가 진행 과제
+
+- WebCrypto
+- 파일 시스템 이벤트
+- WebGL
+
+처음에 언급했듯이 이것은 실험적인 프로젝트입니다. 아직 Node는 건재합니다. 5년 이하의 개발자라면 여기 나온 얘기들을 모두 무시하셔도 됩니다. 그냥 Node를 쓰셔도 됩니다. ㅋㅋ 하지만 우리는 이게 재미있고, 앞으로 더 노력 할 것입니다.
+
+Deno는 오픈 소스 프로젝트입니다. 누구든 와서 같이 만들어주실 분들을 환영합니다.
+
+고맙습니다!
+
+Ryan Dahl ([ry@tinyclouds.org](2019-04-14-deno-performance-1))
