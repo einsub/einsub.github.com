@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "node.js 제작자가 만든 Deno - 자바스크립트의 새로운 접근"
+title: "Node 제작자가 만든 Deno: 자바스크립트의 새로운 접근"
 date: 2019-04-14 23:18:15
 author: Reid
 categories:
