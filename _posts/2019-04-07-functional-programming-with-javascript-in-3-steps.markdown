@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "JavaScript 함수형 프로그래밍 3단계로 설명하기"
+title: "[번역] JavaScript 함수형 프로그래밍 3단계로 설명하기"
 date: 2019-04-07 18:18:15
 author: Reid
 categories:
