@@ -174,15 +174,21 @@ ECS 관리용 사용자로 인증하기 위해 `AccessKeyId`와 `SecretAccessKey
 
 ### 사용자에게 AWS Managed Policy 연결
 
+EC2 관리자 권한 정책 연결
+
+```sh
+aws iam attach-user-policy --policy-arn arn:aws:iam::aws:policy/AmazonEC2FullAccess --user-name ecs-user
+```
+
 ECS 관리자 권한 정책 연결
 
-```shell
+```sh
 $ aws iam attach-user-policy --policy-arn arn:aws:iam::aws:policy/AmazonECS_FullAccess --user-name ecs-user
 ```
 
 ECR 관리자 권한 정책 연결
 
-```console
+```sh
 $ aws iam attach-user-policy --policy-arn arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryFullAccess --user-name ecs-user
 ```
 
