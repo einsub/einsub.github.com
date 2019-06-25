@@ -335,8 +335,8 @@ $ git push origin production
 1. **Git GUI 보다 Git CLI를 이용합니다.** Git CLI로 명령어를 직접 입력하며 작업을 하면 Git GUI 도구로 가려져있던 기능들까지 이해를 할 수 있습니다. Git GUI를 이용하는 것은 터미널에 명령어를 일일이 입력하지 않아도 되므로 편리하지만, 가능하다면 CLI로 동작 방식을 이해하고 사용하는 것이 좋습니다.
 2. **`git pull` 명령 대신, `git fetch --prune`과 `git merge` 명령 조합을 사용합니다.** `git pull`은 내부적으로 `git fetch`와 `git merge`를 자동으로 처리해주는 shortcut입니다. 가급적이면 git fetch로 다른 작업자들의 작업 내용을 내려받은 후에 그래프 상황을 보며 merge를 해주는 것이 좋습니다.
 3. **의존성 있는 PR은 최대한 지양해야 합니다.** 의존성이 있다면 하나의 PR로 갈 수 있을지를 먼저 의심하고, 어쩔 수 없는 경우라면 반드시 후행 브랜치는 선행 브랜치와 함께 rebase 되어야 합니다.
-4. **bash-git-prompt와 같은 도구를 이용하여 터미널에서 git 상태를 빠르게 확인 할 수 있게 합니다.** 현재 어느 브랜치에서 작업중인지, staging 되어 있는 파일이 존재하는지, 충돌이 발생했는지 등을 빠르게 파악 할 수 있습니다.
-5. **pretty git log를 이용하여 터미널에서 git commit graph를 시각적으로 확인 할 수 있게 합니다.** 터미널에서 커밋 그래프를 확인 할 때 반드시 필요한 도구입니다.
+4. **[bash-git-prompt](https://github.com/magicmonty/bash-git-prompt)와 같은 도구를 이용하여 터미널에서 git 상태를 빠르게 확인 할 수 있게 합니다.** 현재 어느 브랜치에서 작업중인지, staging 되어 있는 파일이 존재하는지, 충돌이 발생했는지 등을 빠르게 파악 할 수 있습니다.
+5. **[pretty git log](https://coderwall.com/p/euwpig/a-better-git-log)를 이용하여 터미널에서 git commit graph를 시각적으로 확인 할 수 있게 합니다.** 터미널에서 커밋 그래프를 확인 할 때 반드시 필요한 도구입니다.
 6. **공동 작업 중인 topic branch에 대한 rebase는 상대 작업자를 곤궁에 빠뜨릴 수 있습니다.** rebase는 원래 있던 커밋을 없애고 새로운 커밋을 만드는 파괴적인 작업입니다. 여러명이 작업중인 브랜치를 강제로 rebase 해버린다면 어떤 작업자는 이미 사라진 커밋 위에서 작업을 해야 할 수 있습니다.
 
 ## 마치며
