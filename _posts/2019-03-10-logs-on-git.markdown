@@ -22,7 +22,7 @@ published: true
 
 ## 커밋 메시지 규칙
 
-이미 유정하지만, 커밋 메시지를 작성하는 좋은 규칙들을 공유합니다.
+이미 유명하지만, 커밋 메시지를 작성하는 좋은 규칙들을 공유합니다.
 
 - [How to Write a Git Commit Message](https://chris.beams.io/posts/git-commit/)
 - [AngularJS Git Commit Message Conventions](https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y/edit)
