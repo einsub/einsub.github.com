@@ -86,6 +86,7 @@ RefreshToken은 서버에서 따로 저장을 하고 있기 때문에 강제로 
 #### 단점
 - 클라이언트는 AccessToken의 만료에 대한 연장 요청을 구현해야 합니다.
 - 인증 만료 기간의 자동 연장이 불가능합니다.
+- 서버에 별도의 storage를 만들어야 합니다.
 
 ### Sliding Sessions 전략과 함께 AccessToken과 RefreshToken을 사용
 
